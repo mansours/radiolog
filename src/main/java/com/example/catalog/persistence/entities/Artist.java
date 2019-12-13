@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Data
 @Entity
-@Table(name="artist")
+@Table(name="app_artist")
 public class Artist implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
