@@ -7,14 +7,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Controller
 public class HomeController {
-
     @RequestMapping(method = GET, value = "/")
     public String home() {
         return "home";
-    }
-
-    @RequestMapping(method = GET, value = "admin")
-    public String admin() {
-        return "admin";
     }
 }

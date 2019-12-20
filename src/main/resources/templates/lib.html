@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<th:block th:fragment="sortColumn(search, columnTitle, columnValue)">
+    <!--/*@thymesVar id="search" type="com.example.catalog.dto.search.SearchDTO"*/-->
+    <!--/*@thymesVar id="columnValue" type="java.lang.String"*/-->
+    <!--/*@thymesVar id="columnTitle" type="java.lang.String"*/-->
+    <th
+            th:attr="aria-sort=${search.sortBy eq columnValue ? (search.orderDir eq 'DESC' ? 'descending' : 'ascending') : null}, aria-label=${columnTitle}+': activate to sort column ' + ${search.sortBy eq columnValue and search.orderDir ne 'DESC' ? 'descending' : 'ascending'}"
+            th:data-column-value="${columnValue}" onclick="ru.lib.page.sort(this.getAttribute('data-column-value'))"
+            aria-controls="data_table">
+        <th:block th:text="${columnTitle}"/>
+        <i class="fas" th:classappend="${search.sortBy eq columnValue ? (search.orderDir eq 'DESC'  ? 'fa-sort-amount-down' : 'fa-sort-amount-up-alt') : 'fa-sort'}"></i>
+    </th>
+</th:block>
+
+</body>
+</html>
