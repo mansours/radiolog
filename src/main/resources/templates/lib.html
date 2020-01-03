@@ -6,6 +6,20 @@
 </head>
 <body>
 
+<th:block th:fragment="userMessage(userMessage)">
+    <!--/*@thymesVar id="userMessage" type="com.example.catalog.dto.UserMessageDTO"*/-->
+    <div th:if="${userMessage ne null}" class="resAnnouncement section" style="margin-bottom:15px;">
+        <section aria-label="Announcement" class="infoContainer" th:classappend="'alert-'+${userMessage.severity}">
+            <div class="contentWrapper">
+                <div class="iconContainer">
+                    <span aria-hidden='true' class='icon fa' th:classappend="${userMessage.severity eq 'danger'? 'fa-times-circle': (userMessage.severity eq 'warning'? 'fa-exclamation-triangle':(userMessage.severity eq 'success'? 'fa-check-circle': 'fa-exclamation-circle')) }"></span>
+                </div>
+                <div class="textContainer" th:utext="${userMessage.message}"></div>
+            </div>
+        </section>
+    </div>
+</th:block>
+
 <th:block th:fragment="sortColumn(search, columnTitle, columnValue)">
     <!--/*@thymesVar id="search" type="com.example.catalog.dto.search.SearchDTO"*/-->
     <!--/*@thymesVar id="columnValue" type="java.lang.String"*/-->

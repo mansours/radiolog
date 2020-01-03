@@ -1,6 +1,7 @@
 package com.example.catalog.controllers;
 
 import com.example.catalog.dto.ArtistDTO;
+import com.example.catalog.dto.UserMessageDTO;
 import com.example.catalog.dto.search.ArtistSearchDTO;
 import com.example.catalog.persistence.entities.Artist;
 import com.example.catalog.persistence.services.ArtistService;
@@ -18,6 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.util.HashMap;
 
+import static com.example.catalog.dto.UserMessageDTO.SEVERITY_ERROR;
+import static com.example.catalog.dto.UserMessageDTO.SEVERITY_SUCCESS;
 import static com.example.catalog.persistence.services.ArtistService.Column.LABEL;
 import static com.example.catalog.persistence.services.ArtistService.Column.NAME;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -35,7 +38,7 @@ public class AdminController {
     }
     //</editor-fold>
 
-    @RequestMapping(method = {GET, POST}, value = "/admin")
+    @RequestMapping(method = {GET, POST}, value = "/artist")
     public String admin(final ModelMap model,
                         final ArtistSearchDTO search) {
 
@@ -56,12 +59,12 @@ public class AdminController {
 
         model.addAttribute("list", list);
 
-        return "admin";
+        return "admin/artistList";
     }
 
-    @RequestMapping(method = GET, value = "/{id}")
-    public String editBenchmark(final ModelMap model,
-                                @PathVariable("id") final Long id) {
+    @RequestMapping(method = GET, value = "/artist/{id}")
+    public String editArtist(final ModelMap model,
+                             @PathVariable("id") final Long id) {
 
         // If the save controller method below has a validation failure, it will redirect to this method with the model populated with corrections already.
         if (model.get("artistDTO") == null) {
@@ -76,9 +79,9 @@ public class AdminController {
     }
 
     @RequestMapping(method = POST, value = "/artist/save")
-    public String saveBenchmark(final RedirectAttributes redirectAttributes,
-                                @Valid final ArtistDTO artistDTO,
-                                final BindingResult bindingResult) {
+    public String saveArtist(final RedirectAttributes redirectAttributes,
+                             @Valid final ArtistDTO artistDTO,
+                             final BindingResult bindingResult) {
         Artist dbArtist = (artistDTO.getId() == null)
                 ? new Artist() //New
                 : artistService.get(artistDTO.getId()); //Existing
@@ -88,13 +91,13 @@ public class AdminController {
         if (bindingResult.hasErrors()) { //Send it back to view with errors
             redirectAttributes.addFlashAttribute("artistDTO", new ArtistDTO(dbArtist));
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.artistDTO", bindingResult);
-//            redirectAttributes.addFlashAttribute("userMessageDTO", new UserMessageDTO("Benchmark not saved, you must correct the errors below.", SEVERITY_ERROR));
+            redirectAttributes.addFlashAttribute("userMessageDTO", new UserMessageDTO("Artist not saved, you must correct the errors below.", SEVERITY_ERROR));
         } else { //Save and return
             dbArtist = artistService.save(dbArtist);
-//            redirectAttributes.addFlashAttribute("userMessageDTO", new UserMessageDTO("Successfully saved the Benchmark.", SEVERITY_SUCCESS));
+            redirectAttributes.addFlashAttribute("userMessageDTO", new UserMessageDTO("Successfully saved the Artist.", SEVERITY_SUCCESS));
         }
-//        return "redirect:/" + (dbArtist.getId() == null ? -1 : dbArtist.getId());
-        return "redirect:/admin";
+
+        return "redirect:/artist/" + (dbArtist.getId() == null ? -1 : dbArtist.getId());
     }
 
 }
