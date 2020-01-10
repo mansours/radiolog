@@ -48,12 +48,13 @@
 <body>
 
 <!-- HEADER SEARCH BAR START  -->
+
 <nav class="navbar navbar-dark fixed-top flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Company name</a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Music Catalog</a>
     <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
     <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-            <a class="signout nav-link pl-2 pr-2 " href="#">Sign out</a>
+            <a class="rounded signout text-white nav-link pl-2 pr-2" href="#">Sign out</a>
         </li>
     </ul>
 </nav>
@@ -64,17 +65,18 @@
             <div class="sidebar-sticky">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" href="artistList.html" th:href="@{/artist}">
+                        <a class="nav-link" href="artistList.html" th:href="@{/artist}">
                             <span data-feather="artist"></span>
-                            Artist List<span class="sr-only">(current)</span>
+                            Artist List
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="albumList.html" th:href="@{/album}">
+                        <a class="nav-link active" href="#">
                             <span data-feather="album"></span>
-                            Album List
+                            Album List<span class="sr-only">(current)</span>
                         </a>
                     </li>
+
 
                 </ul>
 
@@ -96,10 +98,11 @@
             </div>
         </nav>
         <!--  MAIN CONTENT START   -->
+
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
             <!--  TITLE START  -->
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Artist Database</h1>
+                <h1 class="h2">Album Database</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <div class="btn-group mr-2">
                         <button type="button" class="btn btn-sm btn-outline-secondary">Add</button>
@@ -114,8 +117,8 @@
             <!-- TITLE ENDS  -->
             <!--            <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>-->
 
-            <!--/*@thymesVar id="search" type="com.example.catalog.dto.search.ArtistSearchDTO"*/-->
-            <form id="searchForm" method="post" th:action="@{/artist}" style="margin-bottom: 10px" th:object="${search}">
+            <!--/*@thymesVar id="search" type="com.example.catalog.dto.search.AlbumSearchDTO"*/-->
+            <form id="searchForm" method="post" th:action="@{/album}" style="margin-bottom: 10px" th:object="${search}">
                 <input id="page" type="hidden" th:field="*{page}"/>
                 <input id="orderDir" type="hidden" th:field="*{orderDir}"/>
                 <input id="sortBy" type="hidden" th:field="*{sortBy}"/>
@@ -128,6 +131,11 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="label">Genre:</label>
+                    <input class="col-sm-6 form-control" type="text" id="genre" th:field="*{genre}"/>
+                </div>
+
+                <div class="form-group">
                     <label for="label">Label:</label>
                     <input class="col-sm-6 form-control" type="text" id="label" th:field="*{label}"/>
                 </div>
@@ -135,23 +143,26 @@
                 <button type="submit" class="btn btn-success">Submit</button>
             </form>
             <!-- DATA ROWS START-->
-            <h2>Artists</h2>
+            <h2>Albums</h2>
             <div class="table-responsive">
                 <table class="table table-striped table-sm">
                     <thead>
                     <tr>
-                        <th>Artist ID</th>
-                        <th:block th:replace="~{lib :: sortColumn(${search}, 'Artist Name', 'NAME')}"/>
-                        <th:block th:replace="~{lib :: sortColumn(${search}, 'Artist Label', 'LABEL')}"/>
+                        <th>Album ID</th>
+                        <th:block th:replace="~{lib :: sortColumn(${search}, 'Album Name', 'NAME')}"/>
+                        <th:block th:replace="~{lib :: sortColumn(${search}, 'Album Genre', 'GENRE')}"/>
+                        <th:block th:replace="~{lib :: sortColumn(${search}, 'Album Label', 'LABEL')}"/>
                     </tr>
                     </thead>
                     <tbody>
-                    <!--/*@thymesVar id="list" type="org.springframework.data.domain.Page<com.example.catalog.dto.ArtistDTO>"*/-->
+                    <!--/*@thymesVar id="list" type="org.springframework.data.domain.Page<com.example.catalog.dto.AlbumDTO>"*/-->
                     <tr th:each="item : ${list}">
                         <td th:text="${item.id}"></td>
                         <td>
-                            <a th:href="@{/artist/{id}(id=${item.id})}" th:text="${item.name}"></a>
+                            <a th:href="@{/album/{id}(id=${item.id})}" th:text="${item.name}"></a>
                         </td>
+                        <td th:text="${item.genre}"></td>
+
                         <td th:text="${item.label}"></td>
                     </tr>
                     </tbody>
