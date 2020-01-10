@@ -3,6 +3,7 @@ package com.example.catalog.controllers;
 import com.example.catalog.dto.ArtistDTO;
 import com.example.catalog.dto.UserMessageDTO;
 import com.example.catalog.dto.search.ArtistSearchDTO;
+import com.example.catalog.dto.select2.SelectOptionDTO;
 import com.example.catalog.persistence.entities.Artist;
 import com.example.catalog.persistence.services.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,16 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.example.catalog.dto.UserMessageDTO.SEVERITY_ERROR;
 import static com.example.catalog.dto.UserMessageDTO.SEVERITY_SUCCESS;
@@ -27,20 +34,20 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
-public class AdminController {
+public class ArtistController {
 
     //<editor-fold desc="Controller Services & Autowiring">
     private final ArtistService artistService;
 
     @Autowired
-    public AdminController(ArtistService artistService) {
+    public ArtistController(ArtistService artistService) {
         this.artistService = artistService;
     }
     //</editor-fold>
 
     @RequestMapping(method = {GET, POST}, value = "/artist")
-    public String admin(final ModelMap model,
-                        final ArtistSearchDTO search) {
+    public String artistList(final ModelMap model,
+                             final ArtistSearchDTO search) {
 
         //Get navigation and search parameters
         Sort.Direction dir = StringUtils.hasLength(search.getOrderDir()) ? Sort.Direction.valueOf(search.getOrderDir()) : Sort.Direction.ASC;
@@ -98,6 +105,17 @@ public class AdminController {
         }
 
         return "redirect:/artist/" + (dbArtist.getId() == null ? -1 : dbArtist.getId());
+    }
+
+    @ResponseBody
+    @RequestMapping(method = GET, value = "/artist/search")
+    public List<SelectOptionDTO> searchArtist(final RedirectAttributes redirectAttributes,
+                                              @RequestParam(value = "q") final String q) {
+        if (!StringUtils.hasText(q) && q.length() > 2) return Collections.emptyList();
+
+        return artistService.get(Map.of(NAME, q), NAME, Sort.Direction.ASC).stream()
+                .map(artist -> new SelectOptionDTO(artist.getId().toString(), artist.getName()))
+                .collect(Collectors.toList());
     }
 
 }

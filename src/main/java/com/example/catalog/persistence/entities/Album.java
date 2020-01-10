@@ -17,15 +17,16 @@ public class Album implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-//    @JoinColumn(name = "artist_id", nullable = false)
-//    private Artist artist;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "artist_id", nullable = false)
+    private Artist artist;
 
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name= "release_date")
+    @Column(name = "release_date")
     @Temporal(TemporalType.DATE)
-    private Calendar date;
+    private Calendar releaseDate;
 
     @Column(name = "genre")
     private String genre;

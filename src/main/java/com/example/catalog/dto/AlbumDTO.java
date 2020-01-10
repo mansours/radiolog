@@ -21,7 +21,7 @@ public class AlbumDTO {
     private String name;
 
     @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private Calendar date;
+    private Calendar releaseDate;
 
     private String genre;
 
@@ -38,7 +38,7 @@ public class AlbumDTO {
     public AlbumDTO(final Album album) {
         this.id = album.getId();
         this.name = album.getName();
-        this.date = album.getDate();
+        this.releaseDate = album.getReleaseDate();
         this.genre = album.getGenre();
         this.numberOfTracks = album.getNumberOfTracks();
         this.downloadCount = album.getDownloadCount();
@@ -47,7 +47,7 @@ public class AlbumDTO {
 
     public void mergeInto(final Album album) {
         album.setName(this.name);
-        album.setDate(this.date);
+        album.setReleaseDate(this.releaseDate);
         album.setGenre(this.genre);
         album.setNumberOfTracks(this.numberOfTracks);
         album.setDownloadCount(this.downloadCount);
