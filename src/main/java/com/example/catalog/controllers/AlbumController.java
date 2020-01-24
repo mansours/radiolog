@@ -4,7 +4,9 @@ import com.example.catalog.dto.AlbumDTO;
 import com.example.catalog.dto.UserMessageDTO;
 import com.example.catalog.dto.search.AlbumSearchDTO;
 import com.example.catalog.persistence.entities.Album;
+import com.example.catalog.persistence.entities.Artist;
 import com.example.catalog.persistence.services.AlbumService;
+import com.example.catalog.persistence.services.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -14,6 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -30,10 +33,12 @@ public class AlbumController {
 
     //<editor-fold desc="Controller Services & Autowiring">
     private final AlbumService albumService;
+    private final ArtistService artistService;
 
     @Autowired
-    public AlbumController(AlbumService albumService) {
+    public AlbumController(AlbumService albumService, ArtistService artistService) {
         this.albumService = albumService;
+        this.artistService = artistService;
     }
     //</editor-fold>
 
@@ -98,6 +103,23 @@ public class AlbumController {
         }
 
         return "redirect:/album/" + (dbAlbum.getId() == null ? -1 : dbAlbum.getId());
+    }
+
+    @RequestMapping(method = POST, value = "/album/add/artist")
+    public String addArtist(final ModelMap model,
+                            @RequestParam(value = "albumId") final Long albumId,
+                            @RequestParam(value = "artistId") final Long artistId) {
+        Album album = albumService.get(albumId);
+        Artist artist = artistService.get(artistId);
+
+        if (album == null || artist == null) {
+            model.addAttribute("userMessageDTO", new UserMessageDTO("Artist or Album does not exist.", SEVERITY_ERROR));
+        } else {
+            album.getArtists().add(artist);
+            albumService.save(album);
+        }
+
+        return "redirect:/album/" + albumId;
     }
 
 }

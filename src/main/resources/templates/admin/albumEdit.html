@@ -66,6 +66,7 @@
 <!--/*@thymesVar id="userMessageDTO" type="com.example.catalog.dto.UserMessageDTO"*/-->
 <th:block th:replace="~{lib :: userMessage(${userMessageDTO})}"/>
 
+<!--/*@thymesVar id="#cal" type="com.example.catalog.utilities.CalendarUtil"*/-->
 <!--/*@thymesVar id="albumDTO" type="com.example.catalog.dto.AlbumDTO"*/-->
 <form id="albumForm" name="albumForm" th:action="@{/album/save}" th:object="${albumDTO}" method="post" class="form-horizontal">
     <input id="id" type="hidden" th:field="*{id}"/>
@@ -101,15 +102,6 @@
         <input class="col-sm-6 form-control" type="number" id="numberOfTracks" th:field="*{numberOfTracks}"/>
     </div>
 
-    <div class="form-group">
-        <label for="artistId-lookup" class="col-sm-3 control-label">Artist: </label>
-        <div class="col-sm-8">
-            <div>
-                <select id="artistId-lookup" name="artistId"></select>
-            </div>
-        </div>
-    </div>
-
     <!--    TODO: Add Label input-->
     <!--    TODO: Add download count input-->
 
@@ -117,6 +109,47 @@
         <div class="col-sm-offset-6 col-md-offset-4 col-sm-6">
             <button type="submit" class="btn btn-primary">Save</button>
             <a class="btn btn-secondary" th:href="@{/album}">Go Back</a>
+        </div>
+    </div>
+</form>
+
+<h2>Artists</h2>
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead>
+        <tr>
+            <th>Artist ID</th>
+            <th>Artist Name</th>
+            <th>Date Of Birth</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${albumDTO.artists}">
+            <td th:text="${item.id}"></td>
+            <td>
+                <a th:href="@{/artist/{id}(id=${item.id})}" th:text="${item.name}"></a>
+            </td>
+            <td th:text="${#cal.getPickerFormat(item.dateOfBirth)}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<form id="addArtistForm" name="addArtistForm" th:action="@{/album/add/artist}" method="post" class="form-horizontal">
+    <input name="albumId" type="hidden" th:value="${albumDTO.id}"/>
+
+        <div class="form-group">
+            <label for="artistId-lookup" class="col-sm-3 control-label">Artist: </label>
+            <div class="col-sm-8">
+                <div>
+                    <select id="artistId-lookup" name="artistId"></select>
+                </div>
+            </div>
+        </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-6 col-md-offset-4 col-sm-6">
+            <button type="submit" class="btn btn-primary">Add Artist</button>
         </div>
     </div>
 </form>
