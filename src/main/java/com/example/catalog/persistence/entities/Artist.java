@@ -23,7 +23,7 @@ public class Artist implements Serializable {
     @Column(name = "name", nullable = false, length = 128)
     private String name;
 
-    @Column(name = "music_label", nullable = false)
+    @Column(name = "music_label", nullable = false, length = 128)
     private String label;
 
     @Column(name = "birth_dt")

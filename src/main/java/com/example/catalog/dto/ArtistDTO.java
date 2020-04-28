@@ -23,7 +23,7 @@ public class ArtistDTO {
     private String name;
 
     @NotNull(message = "Artist label is required.")
-    @Size(min = 1, max = 12, message = "Artist label is required and must be less than twelve characters long.")
+    @Size(min = 1, max = 128, message = "Artist label is required and must be less than a 128 characters long.")
     private String label;
 
     @DateTimeFormat(pattern = "dd/MM/yyyy")
