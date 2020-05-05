@@ -36,7 +36,7 @@ public class AlbumDTO {
     private Long downloadCount;
 
     @NotNull(message = "Album label is required.")
-    @Size(min = 1, max = 12, message = "Album label is required and must be less than twelve characters long.")
+    @Size(min = 1, max = 20, message = "Album label is required and must be less than twelve characters long.")
     private String label;
 
     private List<ArtistDTO> artists = new ArrayList<>(0);
