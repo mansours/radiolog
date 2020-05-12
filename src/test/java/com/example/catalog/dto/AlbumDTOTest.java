@@ -7,13 +7,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.validation.*;
-
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.util.Set;
 
 import static com.example.catalog.TestConstants.ALBUM_ADELE_21;
 import static org.junit.Assert.assertEquals;
-
 
 @RunWith(SpringRunner.class)
 public class AlbumDTOTest {
@@ -21,32 +22,34 @@ public class AlbumDTOTest {
     private static Validator validator;
 
     @BeforeClass
-    public static void createValidator(){
+    public static void createValidator() {
         validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
     }
+
     @AfterClass
-    public static void close() { validatorFactory.close(); }
-
-    @Test
-    public void testEmptyName(){
-             Album obj = ALBUM_ADELE_21();
-             AlbumDTO dto = new AlbumDTO(obj);
-
-             dto.setName("");
-             Set<ConstraintViolation<AlbumDTO>> violations = validator.validate(dto);
-             assertEquals( 1, violations.size());
-
+    public static void close() {
+        validatorFactory.close();
     }
+
     @Test
-    public void testZeroTracks(){
+    public void testEmptyName() {
+        Album obj = ALBUM_ADELE_21();
+        AlbumDTO dto = new AlbumDTO(obj);
+
+        dto.setName("");
+        Set<ConstraintViolation<AlbumDTO>> violations = validator.validate(dto);
+        assertEquals(1, violations.size());
+    }
+
+    @Test
+    public void testZeroTracks() {
         Album obj = ALBUM_ADELE_21();
         AlbumDTO dto = new AlbumDTO(obj);
         dto.setNumberOfTracks(0L);
 
         Set<ConstraintViolation<AlbumDTO>> violations = validator.validate(dto);
         assertEquals(1, violations.size());
-
     }
 }
 

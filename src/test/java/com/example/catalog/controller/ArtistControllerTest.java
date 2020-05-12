@@ -97,7 +97,7 @@ public class ArtistControllerTest {
     @Test
     @WithMockUser
     public void get_loggedIn_NonExistentArtist() throws Exception {
-        mockMvc.perform(get("/artist/4123894705987")
+        mockMvc.perform(get("/artist/-1")
                 .contentType(MediaType.TEXT_HTML))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("artistDTO"))
