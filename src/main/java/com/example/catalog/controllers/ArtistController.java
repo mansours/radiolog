@@ -6,9 +6,14 @@ import com.example.catalog.dto.search.ArtistSearchDTO;
 import com.example.catalog.dto.select2.SelectOptionDTO;
 import com.example.catalog.persistence.entities.Artist;
 import com.example.catalog.persistence.services.ArtistService;
+import com.example.catalog.utilities.ExcelExportUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -21,10 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.example.catalog.dto.UserMessageDTO.SEVERITY_ERROR;
@@ -118,6 +120,24 @@ public class ArtistController {
         return artistService.get(Map.of(NAME, q), NAME, Sort.Direction.ASC).stream()
                 .map(artist -> new SelectOptionDTO(artist.getId().toString(), artist.getName()))
                 .collect(Collectors.toList());
+    }
+
+    @RequestMapping(method = GET, value = "/artist/export")
+    public ResponseEntity<byte[]> exportArtist ()
+    {
+        // get list of artists
+        List<ArtistDTO> artists = artistService.get(Map.of(), NAME, Sort.Direction.ASC)
+                .stream()
+                .map(ArtistDTO::new)//artist-> new ArtistDTO(artist)
+                .collect(Collectors.toList());
+        //feed list of artists to excel util -> byte array
+        byte[] artistXML = ExcelExportUtil.getArtists(artists);
+        //return byte array
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+        headers.add("Content-Disposition", "attachment; filename=ArtistExport" + System.currentTimeMillis() + ".xlsx");
+
+        return new ResponseEntity<>( artistXML , headers, HttpStatus.OK);
     }
 
 }

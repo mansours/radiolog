@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import static com.example.catalog.utilities.CalendarUtil.getPickerFormat;
 import static com.example.catalog.utilities.ExcelUtil.getNumeric;
 import static java.util.Objects.requireNonNullElse;
 import static org.apache.poi.ss.usermodel.CellType.*;
@@ -21,8 +22,8 @@ import static org.apache.poi.ss.usermodel.DataValidationConstraint.OperatorType.
 @Slf4j
 public class ExcelExportUtil {
 
-    public byte[] getArtists(List<ArtistDTO> artists) {
-
+    public static byte[] getArtists(List<ArtistDTO> artists) {
+    //
         byte[] array = new byte[0];
 
         try (ByteArrayOutputStream out = new ByteArrayOutputStream(); Workbook workbook = new XSSFWorkbook()) {
@@ -34,10 +35,12 @@ public class ExcelExportUtil {
             Row headerRow = sheet.createRow(rowCount++);
 
             //TODO: Angela add headers here
-            headerRow.createCell(0, STRING).setCellValue("Action");
-            headerRow.createCell(1, STRING).setCellValue("Effective Year");
-            headerRow.createCell(2, STRING).setCellValue("Header 1");
-            headerRow.createCell(3, STRING).setCellValue("Header 2");
+            headerRow.createCell(0, STRING).setCellValue("ID");
+            headerRow.createCell(1, STRING).setCellValue("Name");
+            headerRow.createCell(2, STRING).setCellValue("Label");
+            headerRow.createCell(3, STRING).setCellValue("Gender");
+            headerRow.createCell(4, STRING).setCellValue("Date of Birth");
+
 
             //Create Styles
             Font font = workbook.createFont();
@@ -48,15 +51,16 @@ public class ExcelExportUtil {
 
             //Set header row to bold and locked
             //TODO: Adjust the range here:
-            IntStream.rangeClosed(0, 27).forEach(x -> headerRow.getCell(x).setCellStyle(boldLockedStyle));
+            IntStream.rangeClosed(0, 4).forEach(x -> headerRow.getCell(x).setCellStyle(boldLockedStyle));
 
             //TODO: Replace with artist model
-            for (ArtistModel row : export) {
+            for (ArtistDTO artist : artists) {
                 Row dataRow = sheet.createRow(rowCount);
-                dataRow.createCell(0, STRING).setCellValue("No Change");
-                dataRow.createCell(1, NUMERIC).setCellValue(getNumeric(row.getYear(), 0));
-                dataRow.createCell(2, STRING).setCellValue(row.getName());
-                dataRow.createCell(9, BOOLEAN).setCellValue(requireNonNullElse(row.getBoolean(), false));
+                dataRow.createCell(0, NUMERIC).setCellValue(getNumeric(artist.getId(), 0));
+                dataRow.createCell(1, STRING).setCellValue(artist.getName());
+                dataRow.createCell(2, STRING).setCellValue(artist.getLabel());
+                dataRow.createCell(3, STRING).setCellValue(artist.getGender());
+                dataRow.createCell(4, STRING).setCellValue(getPickerFormat(artist.getDateOfBirth()));
                 ++rowCount;
             }
 
@@ -65,43 +69,32 @@ public class ExcelExportUtil {
             DataValidationHelper dvHelper = sheet.getDataValidationHelper();
             DataValidation dv;
 
-            DataValidationConstraint actionDv = dvHelper.createExplicitListConstraint(new String[]{"No Change", "Overwrite Year"});
+            DataValidationConstraint mfDv = dvHelper.createExplicitListConstraint(new String[]{"Female", "Male"});
             DataValidationConstraint gtzDv = dvHelper.createIntegerConstraint(GREATER_OR_EQUAL, "0", "0");
             DataValidationConstraint gtzdDv = dvHelper.createDecimalConstraint(GREATER_OR_EQUAL, "0", "0");
             DataValidationConstraint tfDv = dvHelper.createExplicitListConstraint(new String[]{"TRUE", "FALSE"});
 
-            dv = dvHelper.createValidation(actionDv, new CellRangeAddressList(1, rowCount, 0, 0));
-            dv.createErrorBox("Invalid String", "Action must be an option from the drop down list provided.");
+            dv = dvHelper.createValidation(gtzDv, new CellRangeAddressList(1, rowCount, 0, 0));
+            dv.createErrorBox("Invalid Integer", "Artist ID must be greater than 0.");
             dv.setShowErrorBox(true);
             dv.setEmptyCellAllowed(false);
             sheet.addValidationData(dv);
 
-            dv = dvHelper.createValidation(dvHelper.createIntegerConstraint(BETWEEN, "2000", "2100"), new CellRangeAddressList(1, rowCount, 1, 1));
-            dv.createErrorBox("Invalid Integer", "Year must be whole number between 2000 and 2100.");
+            dv = dvHelper.createValidation(dvHelper.createTextLengthConstraint(BETWEEN, "1", "128"), new CellRangeAddressList(1, rowCount, 1, 1));
+            dv.createErrorBox("Invalid String", "Artist name length must be between 1 and 128 characters.");
             dv.setShowErrorBox(true);
             dv.setEmptyCellAllowed(false);
             sheet.addValidationData(dv);
 
-            dv = dvHelper.createValidation(dvHelper.createTextLengthConstraint(BETWEEN, "1", "100"), new CellRangeAddressList(1, rowCount, 4, 4));
-            dv.createErrorBox("Invalid String", "fasdfdasfs length must be between one and one hundred characters.");
+            dv = dvHelper.createValidation(dvHelper.createTextLengthConstraint(BETWEEN, "1", "128"), new CellRangeAddressList(1, rowCount, 2, 2));
+            dv.createErrorBox("Invalid String", "Artist label length must be between 1 and 128 characters.");
             dv.setShowErrorBox(true);
             dv.setEmptyCellAllowed(false);
             sheet.addValidationData(dv);
 
-            dv = dvHelper.createValidation(gtzDv, new CellRangeAddressList(1, rowCount, 7, 7));
-            dv.createErrorBox("Invalid Integer", "fasdfdsf must be a number greater than zero.");
-            dv.setShowErrorBox(true);
-            dv.setEmptyCellAllowed(false);
-            sheet.addValidationData(dv);
 
-            dv = dvHelper.createValidation(gtzdDv, new CellRangeAddressList(1, rowCount, 8, 8));
-            dv.createErrorBox("Invalid Decimal", "fsdfadfasdf must be a number greater than zero.");
-            dv.setShowErrorBox(true);
-            dv.setEmptyCellAllowed(false);
-            sheet.addValidationData(dv);
-
-            dv = dvHelper.createValidation(tfDv, new CellRangeAddressList(1, rowCount, 9, 9));
-            dv.createErrorBox("Invalid Boolean", "afsdfs must be either TRUE or FALSE.");
+            dv = dvHelper.createValidation(mfDv, new CellRangeAddressList(1, rowCount, 3, 3));
+            dv.createErrorBox("Invalid Option", "Gender must be either Female or Male.");
             dv.setShowErrorBox(true);
             dv.setEmptyCellAllowed(false);
             sheet.addValidationData(dv);
