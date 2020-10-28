@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v4.1.1">
+
+    <title>Dashboard Template · Bootstrap</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/dashboard/">
+    <!-- Bootstrap CSS Stylesheets-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="../../../../../../Desktop/Radiolog/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" href="../../../../../../Desktop/Radiolog/favicons/apple-touch-icon.png" sizes="180x180">
+    <link rel="icon" href="../../../../../../Desktop/Radiolog/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="../../../../../../Desktop/Radiolog/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+    <link rel="manifest" href="../../../../../../Desktop/Radiolog/favicons/manifest.json">
+    <link rel="mask-icon" href="../../../../../../Desktop/Radiolog/favicons/safari-pinned-tab.svg" color="#563d7c">
+    <link rel="icon" href="../../../../../../Desktop/Radiolog/favicons/favicon.ico">
+    <meta name="msapplication-config" content="/docs/4.5/assets/img/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#563d7c">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="../../../../../../Desktop/Radiolog/dashboard.css" rel="stylesheet">
+</head>
+
+<body>
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">CJRU Radiolog</a>
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" href="#">Sign out</a>
+        </li>
+    </ul>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="sidebar-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">
+                            <span data-feather="home"></span>
+                            Dashboard <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="bar-chart-2"></span>
+                            <!-- TO DO: change to music icon -->
+                            Shows (Episodes)
+                        </a>
+                    </li>
+                    <!--
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="shopping-cart"></span>
+                            Products
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="users"></span>
+                            Customers
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="bar-chart-2"></span>
+                            Reports
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="layers"></span>
+                            Integrations
+                        </a>
+                    </li>
+                </ul>
+                -->
+                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                    <span>Reports</span>
+                    <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
+                        <span data-feather="plus-circle"></span>
+                    </a>
+                </h6>
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            SOCAN
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            CRTC
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            EARSHOT
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            NACC
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Dashboard</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group mr-2">
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                        <span data-feather="calendar"></span>
+                        This week
+                    </button>
+                </div>
+            </div>
+
+            <!-- TODO: Graph Placement HOW TO CREATE ANOTHER LINE?-->
+            <h4 style="text-align:center;"><span style="color:#cb3434;">CANCON</span> &
+                <span style="color:#3875d7;">FEMCON</span></h4>
+            <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+
+            <h2>Last Show</h2>
+            <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                    <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Creator</th>
+                        <th>Title</th>
+                        <th>Categories</th>
+                        <th>Language</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>10:30</td>
+                        <td>Lorem</td>
+                        <td>ipsum</td>
+                        <td>dolor</td>
+                        <td>EN</td>
+                    </tr>
+                    <tr>
+                        <td>10:35</td>
+                        <td>amet</td>
+                        <td>consectetur</td>
+                        <td>adipiscing</td>
+                        <td>FR</td>
+                    </tr>
+                    <tr>
+                        <td>10:40</td>
+                        <td>Integer</td>
+                        <td>nec</td>
+                        <td>odio</td>
+                        <td>SPN</td>
+                    </tr>
+                    <tr>
+                        <td>10:45</td>
+                        <td>libero</td>
+                        <td>Sed</td>
+                        <td>cursus</td>
+                        <td>FR</td>
+                    </tr>
+                    <tr>
+                        <td>10:50</td>
+                        <td>dapibus</td>
+                        <td>diam</td>
+                        <td>Sed</td>
+                        <td>BL</td>
+                    </tr>
+                    <tr>
+                        <td>10:55</td>
+                        <td>Nulla</td>
+                        <td>quis</td>
+                        <td>sem</td>
+                        <td>EN</td>
+                    </tr>
+                    <tr>
+                        <td>11:00</td>
+                        <td>nibh</td>
+                        <td>elementum</td>
+                        <td>imperdiet</td>
+                        <td>EN</td>
+                    </tr>
+                    <tr>
+                        <td>11:05</td>
+                        <td>sagittis</td>
+                        <td>ipsum</td>
+                        <td>Praesent</td>
+                        <td>EN</td>
+                    </tr>
+                    <tr>
+                        <td>11:10</td>
+                        <td>Fusce</td>
+                        <td>nec</td>
+                        <td>tellus</td>
+                        <td>EN</td>
+                    </tr>
+                    <tr>
+                        <td>11:15</td>
+                        <td>augue</td>
+                        <td>semper</td>
+                        <td>porta</td>
+                        <td>EN</td>
+                    </tr>
+                    <tr>
+                        <td>11:20</td>
+                        <td>massa</td>
+                        <td>Vestibulum</td>
+                        <td>lacinia</td>
+                        <td>EN</td>
+                    </tr>
+                    <tr>
+                        <td>11:25</td>
+                        <td>eget</td>
+                        <td>nulla</td>
+                        <td>Class</td>
+                        <td>EN</td>
+                    </tr>
+                    <tr>
+                        <td>11:30</td>
+                        <td>taciti</td>
+                        <td>sociosqu</td>
+                        <td>ad</td>
+                        <td>EN</td>
+                    </tr>
+                    <tr>
+                        <td>11:35</td>
+                        <td>torquent</td>
+                        <td>per</td>
+                        <td>conubia</td>
+                        <td>EN</td>
+                    </tr>
+                    <tr>
+                        <td>11:40</td>
+                        <td>per</td>
+                        <td>inceptos</td>
+                        <td>himenaeos</td>
+                        <td>EN</td>
+                    </tr>
+                    <tr>
+                        <td>11:45</td>
+                        <td>sodales</td>
+                        <td>ligula</td>
+                        <td>in</td>
+                        <td>EN</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="../../../../../../Desktop/Radiolog/jquery.slim.min.js"><\/script>')</script><script src="../../../../../../Desktop/Radiolog/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+<script src="../../../../../../Desktop/Radiolog/dashboard.js"></script>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+-->
+</body>
+</html>
