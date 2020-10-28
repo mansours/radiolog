@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@Table(name = "show")
 public class Show implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -19,7 +20,7 @@ public class Show implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "title", nullable = false)
     private String title;
 
     @Column(name = "programmer", nullable = false)
@@ -28,9 +29,9 @@ public class Show implements Serializable {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "show_date", nullable = false)
-    private Calendar showDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "show_ts", nullable = false)
+    private Calendar showTimestamp;
 
     @Column(name = "code", nullable = false)
     private String code;
@@ -38,11 +39,7 @@ public class Show implements Serializable {
     @Column(name = "guests")
     private String guests;
 
-    @Temporal(TemporalType.TIME)
-    @Column(name = "show_date", nullable = false)
-    private Calendar showStart;
-
-    @Column(name = "code", nullable = false)
+    @Column(name = "language", nullable = false)
     private String language;
 
     @Setter(AccessLevel.NONE)

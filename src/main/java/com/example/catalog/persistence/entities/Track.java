@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@Table(name = "track")
 public class Track {
     private static final long serialVersionUID = 1L;
 
@@ -21,15 +22,12 @@ public class Track {
     private Show show;
 
     @Column(name = "track_start")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Calendar trackStart;
 
     @Column(name = "track_end")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Calendar trackEnd;
-
-    @Column(name = "track_length")
-    private Long trackLength;
 
     @Column(name = "artist")
     private String artist;
@@ -43,8 +41,11 @@ public class Track {
     @Column(name = "title")
     private String title;
 
+    //TODO: language an object? cause what if bilingual
     @Column(name = "language")
     private String language;
+
+    //TODO: CRTC category string? or object (number, name etc)?
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(

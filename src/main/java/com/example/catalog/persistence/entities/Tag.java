@@ -1,10 +1,9 @@
 package com.example.catalog.persistence.entities;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+
+@Table(name = "tag")
 public class Tag {
     private static final long serialVersionUID = 1L;
 
