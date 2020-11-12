@@ -1,18 +1,12 @@
 package com.example.catalog.controllers;
 
-import com.example.catalog.dto.AlbumDTO;
 import com.example.catalog.dto.ShowDTO;
-import com.example.catalog.dto.TrackDTO;
 import com.example.catalog.dto.UserMessageDTO;
-import com.example.catalog.dto.search.AlbumSearchDTO;
 import com.example.catalog.dto.search.ShowSearchDTO;
 import com.example.catalog.persistence.entities.Show;
-import com.example.catalog.persistence.entities.Track;
-import com.example.catalog.persistence.services.AlbumService;
 import com.example.catalog.persistence.services.ShowService;
 import com.example.catalog.persistence.services.TrackService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -24,7 +18,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.util.HashMap;
 
-import static com.example.catalog.persistence.services.AlbumService.Column.*;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -33,7 +26,7 @@ public class ShowController {
     private final TrackService trackService;
 
     @Autowired
-    public ShowController(ShowService showService, TrackService trackService){
+    public ShowController(ShowService showService, TrackService trackService) {
         this.showService = showService;
         this.trackService = trackService;
     }
@@ -47,7 +40,8 @@ public class ShowController {
 
         HashMap<ShowService.Column, Object> filters = new HashMap<>();
         if (StringUtils.hasText(search.getTitle())) filters.put(ShowService.Column.TITLE, search.getTitle());
-        if (StringUtils.hasText(search.getProgrammer())) filters.put(ShowService.Column.PROGRAMMER, search.getProgrammer());
+        if (StringUtils.hasText(search.getProgrammer()))
+            filters.put(ShowService.Column.PROGRAMMER, search.getProgrammer());
 
 //        Page<AlbumDTO> list = showService.get(filters, sort, dir, search.getPage(), search.getPageSize()).map(ShowDTO::new);
 //
@@ -60,36 +54,36 @@ public class ShowController {
 
         return "/showList";
     }
+
     @RequestMapping(method = GET, value = "/show/{id}")
-    public String editShow(final ModelMap model, @PathVariable("id") final Long id){
-        if(model.get("showDTO") == null){
+    public String editShow(final ModelMap model, @PathVariable("id") final Long id) {
+        if (model.get("showDTO") == null) {
             Show show = showService.get(id);
-            if(show == null)
+            if (show == null)
                 show = new Show();
             model.addAttribute("showDTO", new ShowDTO(show));
         }
         return "/showEdit";
     }
+
     @RequestMapping(method = POST, value = "/show/save")
     public String saveShow(final RedirectAttributes redirectAttributes, @Valid final ShowDTO showDTO,
-                            final BindingResult bindingResult){
+                           final BindingResult bindingResult) {
         Show dbShow = (showDTO.getId() == null) ? new Show() : showService.get(showDTO.getId());
 
         showDTO.mergeInto(dbShow);
 
-        if (bindingResult.hasErrors()){
-            redirectAttributes.addFlashAttribute("trackDTO", new TrackDTO(dbTrack));
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("showDTO", new ShowDTO(dbShow));
             redirectAttributes.addFlashAttribute("org.springframework.validation.Binding.trackDTO", bindingResult);
             redirectAttributes.addFlashAttribute("userMessageDTO", new UserMessageDTO("Track not saved. Correct the errors", UserMessageDTO.SEVERITY_ERROR));
-        }
-        else {
-            dbTrack = trackService.save(dbTrack);
+        } else {
+            dbShow = showService.save(dbShow);
             redirectAttributes.addFlashAttribute("userMessageDTO", new UserMessageDTO("Successfully saved track", UserMessageDTO.SEVERITY_SUCCESS));
 
         }
-        return "redirect:/track/" + (dbTrack.getId() == null ? -1 : dbTrack.getId());
+        return "redirect:/track/" + (dbShow.getId() == null ? -1 : dbShow.getId());
     }
-
 
 
 }

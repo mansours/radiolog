@@ -43,6 +43,11 @@ public class TrackDTO {
 
     private Set<Tag> tags = new HashSet<>(0);
 
+
+    public TrackDTO(final Track track){
+        this(track,true);
+
+    }
     public TrackDTO(final Track track, final boolean createChildren){
         this.id = track.getId();
         this.show = track.getShow();
