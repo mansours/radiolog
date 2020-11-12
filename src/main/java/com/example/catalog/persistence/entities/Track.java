@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@Entity
 @Table(name = "track")
 public class Track {
     private static final long serialVersionUID = 1L;

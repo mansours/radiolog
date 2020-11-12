@@ -7,20 +7,23 @@ import com.example.catalog.persistence.entities.Show;
 import com.example.catalog.persistence.services.ShowService;
 import com.example.catalog.persistence.services.TrackService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.HashMap;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-
+@Controller
+@RequestMapping("/show")
 public class ShowController {
     private final ShowService showService;
     private final TrackService trackService;
@@ -31,7 +34,7 @@ public class ShowController {
         this.trackService = trackService;
     }
 
-    @RequestMapping(method = {GET, POST}, value = "/album")
+    @RequestMapping("/list")
     public String showList(final ModelMap model, final ShowSearchDTO search) {
 
         //Get navigation and search parameters
@@ -43,19 +46,19 @@ public class ShowController {
         if (StringUtils.hasText(search.getProgrammer()))
             filters.put(ShowService.Column.PROGRAMMER, search.getProgrammer());
 
-//        Page<AlbumDTO> list = showService.get(filters, sort, dir, search.getPage(), search.getPageSize()).map(ShowDTO::new);
-//
-//        search.setOrderDir(dir.name());
-//        search.setSortBy(sort.name());
-//        search.setPageCount(list.getTotalPages());
-//        model.addAttribute("search", search);
-//
-//        model.addAttribute("list", list);
+        Page<ShowDTO> list = showService.get(filters, sort, dir, search.getPage(), search.getPageSize()).map(ShowDTO::new);
 
-        return "/showList";
+        search.setOrderDir(dir.name());
+        search.setSortBy(sort.name());
+        search.setPageCount(list.getTotalPages());
+        model.addAttribute("search", search);
+
+        model.addAttribute("list", list);
+
+        return "show/list";
     }
 
-    @RequestMapping(method = GET, value = "/show/{id}")
+    @GetMapping("/view/{id}")
     public String editShow(final ModelMap model, @PathVariable("id") final Long id) {
         if (model.get("showDTO") == null) {
             Show show = showService.get(id);
@@ -63,10 +66,10 @@ public class ShowController {
                 show = new Show();
             model.addAttribute("showDTO", new ShowDTO(show));
         }
-        return "/showEdit";
+        return "show/edit";
     }
 
-    @RequestMapping(method = POST, value = "/show/save")
+    @PostMapping("/save")
     public String saveShow(final RedirectAttributes redirectAttributes, @Valid final ShowDTO showDTO,
                            final BindingResult bindingResult) {
         Show dbShow = (showDTO.getId() == null) ? new Show() : showService.get(showDTO.getId());
@@ -75,15 +78,13 @@ public class ShowController {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("showDTO", new ShowDTO(dbShow));
-            redirectAttributes.addFlashAttribute("org.springframework.validation.Binding.trackDTO", bindingResult);
-            redirectAttributes.addFlashAttribute("userMessageDTO", new UserMessageDTO("Track not saved. Correct the errors", UserMessageDTO.SEVERITY_ERROR));
+            redirectAttributes.addFlashAttribute("org.springframework.validation.Binding.showDTO", bindingResult);
+            redirectAttributes.addFlashAttribute("userMessageDTO", new UserMessageDTO("Show not saved. Correct the errors", UserMessageDTO.SEVERITY_ERROR));
         } else {
             dbShow = showService.save(dbShow);
-            redirectAttributes.addFlashAttribute("userMessageDTO", new UserMessageDTO("Successfully saved track", UserMessageDTO.SEVERITY_SUCCESS));
+            redirectAttributes.addFlashAttribute("userMessageDTO", new UserMessageDTO("Successfully saved show", UserMessageDTO.SEVERITY_SUCCESS));
 
         }
-        return "redirect:/track/" + (dbShow.getId() == null ? -1 : dbShow.getId());
+        return "redirect:/show/" + (dbShow.getId() == null ? -1 : dbShow.getId());
     }
-
-
 }

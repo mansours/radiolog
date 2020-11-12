@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@Entity
 @Table(name = "show")
 public class Show implements Serializable {
     private static final long serialVersionUID = 1L;
