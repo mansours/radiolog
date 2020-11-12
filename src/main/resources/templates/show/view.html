@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en" layout:decorate="~{layout/web}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<!--/*@thymesVar id="showDTO" type="com.example.catalog.dto.ShowDTO"*/-->
+<body>
+
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" layout:fragment="main">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1>Show Editor</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+                <button type="button" class="btn btn-sm btn-outline-secondary">Add Track</button>
+            </div>
+        </div>
+    </div>
+
+    <!--    TODO: Display show attributes here using ${showDTO...} -->
+
+    <button type="button" class="btn btn-sm btn-outline-secondary">Add Track</button>
+    <!--    TODO: Display track list as a table here-->
+
+</main>
+</body>
+</html>

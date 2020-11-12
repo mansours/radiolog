@@ -66,7 +66,7 @@ public class ShowController {
                 show = new Show();
             model.addAttribute("showDTO", new ShowDTO(show));
         }
-        return "show/edit";
+        return "show/view";
     }
 
     @PostMapping("/save")
