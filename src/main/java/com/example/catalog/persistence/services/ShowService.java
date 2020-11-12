@@ -1,6 +1,5 @@
 package com.example.catalog.persistence.services;
 
-import com.example.catalog.persistence.entities.Album;
 import com.example.catalog.persistence.entities.Show;
 import com.example.catalog.persistence.repositories.ShowRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +15,7 @@ import javax.persistence.PersistenceContext;
 @Service
 public class ShowService {
 
-    private enum Column {TITLE, PROGRAMMER, EMAIL, TIME, CODE, GUESTS, LANGUAGE}
+    public enum Column {TITLE, PROGRAMMER, EMAIL, TIME, CODE, GUESTS, LANGUAGE}
 
     private final ShowRepository showRepository;
 
@@ -33,7 +32,7 @@ public class ShowService {
     }
 
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.SUPPORTS)
-    public Album save(Show show) {
+    public Show save(Show show) {
 
         return showRepository.save(show);
     }
