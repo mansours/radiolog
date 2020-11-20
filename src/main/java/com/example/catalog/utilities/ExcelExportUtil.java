@@ -60,7 +60,7 @@ public class ExcelExportUtil {
                 dataRow.createCell(1, STRING).setCellValue(artist.getName());
                 dataRow.createCell(2, STRING).setCellValue(artist.getLabel());
                 dataRow.createCell(3, STRING).setCellValue(artist.getGender());
-                dataRow.createCell(4, STRING).setCellValue(getPickerFormat(artist.getDateOfBirth()));
+                dataRow.createCell(4, STRING).setCellValue(getPickerFormat(artist.getDateOfBirth(), false));
                 ++rowCount;
             }
 

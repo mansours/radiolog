@@ -4,6 +4,7 @@ import com.example.catalog.persistence.entities.Show;
 import com.example.catalog.persistence.entities.Track;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.util.*;
@@ -29,6 +30,7 @@ public class ShowDTO {
 
     private String code;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm")
     private Calendar showTimestamp;
 
     private List<TrackDTO> tracks = new ArrayList<>(0);

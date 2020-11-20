@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.Calendar;
 import java.util.HashMap;
 
 @Controller
@@ -35,8 +36,8 @@ public class ShowController {
     }
 
     @RequestMapping("/list")
-    public String showList(final ModelMap model, final ShowSearchDTO search) {
-
+    public String showList(final ModelMap model,
+                           final ShowSearchDTO search) {
         //Get navigation and search parameters
         Sort.Direction dir = StringUtils.hasLength(search.getOrderDir()) ? Sort.Direction.valueOf(search.getOrderDir()) : Sort.Direction.ASC;
         ShowService.Column sort = StringUtils.hasLength(search.getSortBy()) ? ShowService.Column.valueOf(search.getSortBy()) : ShowService.Column.TIME;
@@ -59,7 +60,8 @@ public class ShowController {
     }
 
     @GetMapping("/view/{id}")
-    public String editShow(final ModelMap model, @PathVariable("id") final Long id) {
+    public String editShow(final ModelMap model,
+                           @PathVariable final Long id) {
         if (model.get("showDTO") == null) {
             Show show = showService.get(id);
             if (show == null)
@@ -81,10 +83,11 @@ public class ShowController {
             redirectAttributes.addFlashAttribute("org.springframework.validation.Binding.showDTO", bindingResult);
             redirectAttributes.addFlashAttribute("userMessageDTO", new UserMessageDTO("Show not saved. Correct the errors", UserMessageDTO.SEVERITY_ERROR));
         } else {
+            dbShow.setShowTimestamp(Calendar.getInstance()); //TODO: Fix the showTimestamp format so it can be read from the front end.
             dbShow = showService.save(dbShow);
             redirectAttributes.addFlashAttribute("userMessageDTO", new UserMessageDTO("Successfully saved show", UserMessageDTO.SEVERITY_SUCCESS));
 
         }
-        return "redirect:/show/" + (dbShow.getId() == null ? -1 : dbShow.getId());
+        return "redirect:/show/view/" + (dbShow.getId() == null ? -1 : dbShow.getId());
     }
 }
