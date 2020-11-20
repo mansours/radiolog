@@ -19,7 +19,8 @@ public class TrackDTO {
     //track_id, show_id, track_start, track_end, artist, album, label, title, language, tags
     private Long id;
 
-    private Show show;
+    private ShowDTO show;
+    private Long showId;
 
     private String artist;
 
@@ -28,7 +29,7 @@ public class TrackDTO {
     private String label;
 
     @NotNull(message = "Title for this track is required.")
-   // @Size(min = 1, max = 128, message = "Track title is required and must be less than 128 characters long")
+    // @Size(min = 1, max = 128, message = "Track title is required and must be less than 128 characters long")
     private String title;
 
     @NotNull(message = "Language of this track is required.")
@@ -43,14 +44,12 @@ public class TrackDTO {
 
     private Set<Tag> tags = new HashSet<>(0);
 
-
-    public TrackDTO(final Track track){
-        this(track,true);
-
+    public TrackDTO(final Track track) {
+        this(track, true);
     }
-    public TrackDTO(final Track track, final boolean createChildren){
+
+    public TrackDTO(final Track track, final boolean createChildren) {
         this.id = track.getId();
-        this.show = track.getShow();
         this.artist = track.getArtist();
         this.album = track.getAlbum();
         this.label = track.getLabel();
@@ -60,11 +59,14 @@ public class TrackDTO {
         this.trackEnd = track.getTrackEnd();
         this.tags = track.getTags();
 
-
+        if (createChildren) {
+            this.show = new ShowDTO(track.getShow(), false);
+            this.showId = track.getShow().getId();
+        }
     }
-    public void mergeInto(final Track track) {
+
+    public void mergeInto(final Track track, final Show show) {
         track.setTitle(this.title);
-        track.setShow(this.show);
         track.setArtist(this.artist);
         track.setAlbum(this.album);
         track.setLabel(this.label);
@@ -72,6 +74,7 @@ public class TrackDTO {
         track.setTrackStart(this.trackStart);
         track.setTrackEnd(this.trackEnd);
         track.setTags(this.tags);
+        track.setShow(show);
     }
 
 }
