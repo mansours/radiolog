@@ -6,7 +6,7 @@
 <body>
 
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" layout:fragment="main">
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 mb-2 border-bottom">
         <h1>Show Editor</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group mr-2">
@@ -14,83 +14,87 @@
             </div>
         </div>
     </div>
-
+<!--
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-0">
         <h3 class="h3" th:text="${showDTO.title}">Show Title or Date</h3>
         <div class="btn-toolbar mb-2 mb-md-0">
         </div>
     </div>
-
+-->
     <!--    TODO: Nika - The form is too tall, find a layout for forms that condenses the inputs
     https://getbootstrap.com/docs/4.0/components/forms/#form-grid
     TODO: Nika - Learn thymeleaf for merging
     https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html
     -->
     <!-- Show Information (Bootstrap Cards) -->
-    <div class="card text-white bg-dark mb-2 p-1">
-        <div class="card-header">Show Information</div>
+    <h4>Show Information</h4>
+    <div class="card bg-light mb-2 p-1">
         <form th:object="${showDTO}" th:action="@{/show/save}" method="post">
             <input type="hidden" name="id" th:value="*{id}">
-            <div class="form-group p-3">
-                <label for="TitleFormControl">Title</label>
-                <input type="text" class="form-control" id="TitleFormControl" name="title" th:value="*{title}">
+
+                <div class="form-group mx-2 my-2">
+                    <label for="TitleFormControl">Title</label>
+                    <input type="text" class="form-control" id="TitleFormControl" name="title" th:value="*{title}">
+                </div>
+
+            <div class="row">
+                <div class="col mx-2 my-2">
+                    <label for="ProgrammerFormControl">Programmer</label>
+                    <input type="text" class="form-control" id="ProgrammerFormControl" name="programmer" th:value="*{programmer}">
+                </div>
+
+                <div class="col mx-2 my-2">
+                    <label for="EmailFormControl">Email address</label>
+                    <input type="email" class="form-control" id="EmailFormControl" name="email" th:value="*{email}">
+                </div>
+
+                <div class="col mx-2 my-2">
+                    <label for="GuestsFormControl">Guests in Studio</label>
+                    <input type="text" class="form-control" id="GuestsFormControl" name="guests" th:value="*{guests}">
+                </div>
             </div>
-            <div class="form-group p-3">
-                <label for="ProgrammerFormControl">Programmer</label>
-                <input type="text" class="form-control" id="ProgrammerFormControl" name="programmer" th:value="*{programmer}">
+            <div class="row">
+                <div class="col mx-2 my-2">
+                    <label for="StartFormControl">Start Time</label>
+                    <input type="datetime-local" class="form-control" id="StartFormControl" name="showTimestampD" th:value="${#cal.getPickerFormat(showDTO.showTimestamp, true)}">
+                </div>
+
+                <div class="col mx-2 my-2">
+                    <label for="EndFormControl">End Time</label>
+                    <input type="datetime-local" class="form-control" id="EndFormControl" name="showTimestampD" th:value="${#cal.getPickerFormat(showDTO.showTimestamp, true)}">
+                </div>
             </div>
-            <div class="form-group p-3">
-                <label for="EmailFormControl">Email address</label>
-                <input type="email" class="form-control" id="EmailFormControl" name="email" th:value="*{email}">
-            </div>
-            <div class="form-group p-3">
-                <label for="GuestsFormControl">Guests in Studio</label>
-                <input type="text" class="form-control" id="GuestsFormControl" name="guests" th:value="*{guests}">
-            </div>
-            <div class="form-group p-3">
-                <label for="StartFormControl">Start Time</label>
-                <input type="datetime-local" class="form-control" id="StartFormControl" name="showTimestampD" th:value="${#cal.getPickerFormat(showDTO.showTimestamp, true)}">
-            </div>
-            <div class="form-group p-3">
-                <label for="ShowCatFormControl">Show Category #</label>
-                <!--                TODO: come back and populate category value-->
-                <input type="number" class="form-control" id="ShowCatFormControl">
-            </div>
-            <div class="form-group p-3">
-                <label for="CodeFormControl">Code</label>
-                <input type="text" class="form-control" id="CodeFormControl" name="code" th:value="*{code}">
-            </div>
-            <!-- TODO: Add complete Language list (most common)-->
-            <div class="form-group pl-3 pr-3">
-                <label for="LanguageFormControl">Language</label>
-                <select class="form-control" id="LanguageFormControl" name="language" th:value="*{language}">
-                    <option>English</option>
-                    <option>French</option>
-                    <option>Spanish</option>
-                </select>
+            <div class="row">
+                <div class="col mx-2 my-2">
+                    <label for="ShowCatFormControl">Show Category #</label>
+                    <input type="number" class="form-control" id="ShowCatFormControl">
+                </div>
+                <div class="col mx-2 my-2">
+                    <label for="CodeFormControl">Code</label>
+                    <input type="text" class="form-control" id="CodeFormControl" name="code" th:value="*{code}">
+                </div>
+                <div class="col mx-2 my-2">
+                    <label for="LanguageFormControl">Language</label>
+                    <select class="form-control" id="LanguageFormControl" name="language" th:value="*{language}">
+                        <option>English</option>
+                        <option>French</option>
+                        <option>Spanish</option>
+                    </select>
+                </div>
             </div>
 
-            <div class="form-group pl-3 pr-3">
-                <div class="btn-group mr-2">
-                    <button type="submit" class="btn btn-sm btn-secondary">Save</button>
-                </div>
-                <div class="btn-group mr-2">
+            <div class="form-group">
+                <div class="btn-group float-right mx-2 my-2">
                     <button type="button" class="btn btn-sm btn-outline-secondary">Cancel</button>
+                </div>
+                <div class="btn-group float-right mx-2 my-2">
+                    <button type="submit" class="btn btn-sm btn-secondary">Save</button>
                 </div>
             </div>
         </form>
     </div>
-    <!--
-    <div class="card mb-2">
-        <div class="card-body">
-            <h6 class="card-title">Show Title or Date</h6>
-            <p class="card-text">This is some text within a card body.</p>
-            <a href="#" class="card-link">View</a>
-            <a href="#" class="card-link">Edit</a>
-        </div>
-    </div> -->
 
-    <h2>Show Schedule</h2>
+    <h4>Show Schedule</h4>
 
     <div class="table-responsive">
         <table class="table table-striped table-sm">
@@ -233,7 +237,7 @@
             </tbody>
         </table>
 
-        <button type="button" class="btn btn-sm btn-outline-secondary">Add Track</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary float-right">Add Track</button>
         <!--    TODO: Display track list as a table here-->
     </div>
 
