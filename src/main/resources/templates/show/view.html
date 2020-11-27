@@ -55,14 +55,38 @@
             </div>
             <div class="row">
                 <div class="col mx-2 my-2">
-                    <label for="StartFormControl">Start Time</label>
-                    <input type="datetime-local" class="form-control" id="StartFormControl" name="showTimestampD" th:value="${#cal.getPickerFormat(showDTO.showTimestamp, true)}">
-                </div>
+                    <label for="StartFormControl">Date & Time Slot</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" autocomplete="off" id="StartFormControl" name="showTimestamp" th:value="${#cal.getPickerFormat(showDTO.showTimestamp, true)}"/>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">to</span>
+                        </div>
+                        <input type="text" class="form-control" autocomplete="off" id="EndFormControl" name="nameEnd" th:value="${#cal.getPickerFormat(showDTO.showTimestamp, true)}"/>
+                    </div>
 
-                <div class="col mx-2 my-2">
-                    <label for="EndFormControl">End Time</label>
-                    <input type="datetime-local" class="form-control" id="EndFormControl" name="showTimestampD" th:value="${#cal.getPickerFormat(showDTO.showTimestamp, true)}">
                 </div>
+                <script th:inline="javascript" type="text/javascript">
+                    /*<![CDATA[*/
+                    let addTrack = null;
+
+                    $(document).ready(function () {
+                        let modifiedDateStartInput = $("#StartFormControl");
+                        let modifiedDateEndInput = $("#EndFormControl");
+
+                        modifiedDateStartInput.datetimepicker(config.eonasdan.defaultOption);
+                        modifiedDateEndInput.datetimepicker(config.eonasdan.defaultEndOption);
+
+                        modifiedDateStartInput.on("dp.change", function (e) {
+                            modifiedDateEndInput.data("DateTimePicker").minDate(e.date);
+                        });
+                        modifiedDateEndInput.on("dp.change", function (e) {
+                            modifiedDateStartInput.data("DateTimePicker").maxDate(e.date);
+                        });
+
+                    });
+
+                    /*]]>*/
+                </script>
             </div>
             <div class="row">
                 <div class="col mx-2 my-2">
@@ -240,9 +264,10 @@
         <!--    TODO: Display track list as a table here-->
         <!-- TODO: Fix Modal -->
         <!-- Add Track Button -->
-        <button type="button" class="btn btn-sm btn-outline-secondary float-right" data-toggle="modal" data-target="#trackModal">
+        <button type="button" class="btn btn-sm btn-outline-secondary float-right" onclick="addTrack()">
             Add Track
         </button>
+
         <!-- Add Track Modal (Placeholder Pop Up) -->
         <div class="modal fade" id="trackModal" tabindex="-1" role="dialog" aria-labelledby="trackModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -263,6 +288,23 @@
                 </div>
             </div>
         </div>
+
+        <script th:inline="javascript" type="text/javascript">
+            /*<![CDATA[*/
+            let addTrack = null;
+
+            $(document).ready(function () {
+                addTrack = function () {
+                    let modal = $('#trackModal');
+
+                    modal.modal('show');
+                    $('#trackModalLabel').focus();
+                };
+
+            });
+
+            /*]]>*/
+        </script>
 
     </div>
 

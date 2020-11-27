@@ -1,14 +1,17 @@
 package com.example.catalog.dto;
 
 import com.example.catalog.persistence.entities.Show;
-import com.example.catalog.persistence.entities.Track;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.example.catalog.utilities.CalendarUtil.CALENDAR_PICKER_PATTERN_TIMESTAMP;
 
 @Data
 @NoArgsConstructor
@@ -30,13 +33,13 @@ public class ShowDTO {
 
     private String code;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm")
+    @DateTimeFormat(pattern = CALENDAR_PICKER_PATTERN_TIMESTAMP)
     private Calendar showTimestamp;
 
     private List<TrackDTO> tracks = new ArrayList<>(0);
 
-    public ShowDTO(final Show show){
-        this(show,true);
+    public ShowDTO(final Show show) {
+        this(show, true);
     }
 
     public ShowDTO(final Show show, final boolean createChildren) {
