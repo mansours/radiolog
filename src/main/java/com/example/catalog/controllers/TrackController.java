@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/track")
@@ -68,12 +69,12 @@ public class TrackController {
     //TODO: Angela search track by artist, or figure out how to narrow down to a track
     @ResponseBody
     @GetMapping("/query")
-    public List<String> searchMBz(@RequestParam final String query) {
+    public Map<String,String> searchMBz(@RequestParam final String query) {
         //http://localhost/track/query?query=kesha
         //https://musicbrainz.org/ws/2/artist/?query=kesha&fmt=json
         //https://musicbrainz.org/doc/Development
         //https://musicbrainz.org/doc/MusicBrainz_API
-        List<String> demo = musicBrainzService.searchArtist(query);
+        Map<String,String> demo = musicBrainzService.searchArtist(query);
         return demo;
     }
 

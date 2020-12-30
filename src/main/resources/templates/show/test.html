@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" layout:decorate="~{layout/web}"
+      xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:form="http://www.w3.org/1999/xhtml">
+<!--/*@thymesVar id="showDTO" type="com.example.catalog.dto.ShowDTO"*/-->
+<!--/*@thymesVar id="#cal" type="com.example.catalog.utilities.CalendarUtil"*/-->
+<body>
+
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" layout:fragment="main">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1>Show Editor</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+                <button type="button" class="btn btn-sm btn-outline-secondary">Add Track</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card text-white bg-dark mb-2 p-1">
+        <div class="card-header">Show Information</div>
+        <form th:action="@{/show/test}" method="get">
+            <div class="form-group p-3">
+                <label for="TitleFormControl">Title</label>
+                <input type="text" class="form-control" id="TitleFormControl" name="title" th:value="title">
+            </div>
+
+            <div class="form-group pl-3 pr-3">
+                <div class="btn-group mr-2">
+                    <button type="submit" class="btn btn-sm btn-secondary">Search</button>
+                </div>
+                <div class="btn-group mr-2">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div>
+
+        <select>
+            <option th:each="i : ${hi}" th:value="${i}" th:text="${i}">
+            </option>
+        </select>
+
+
+    </div>
+
+
+
+</main>
+</body>
+</html>
