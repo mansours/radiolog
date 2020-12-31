@@ -48,7 +48,7 @@ public class Show implements Serializable {
     private Set<Track> tracks = new HashSet<>(0);
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "category_id")
     private Category category;
 
     //<editor-fold desc="Track Manipulation">
