@@ -75,7 +75,8 @@ public class ShowController {
     }
 
     @PostMapping("/save")
-    public String saveShow(final RedirectAttributes redirectAttributes, @Valid final ShowDTO showDTO,
+    public String saveShow(final RedirectAttributes redirectAttributes,
+                           @Valid final ShowDTO showDTO,
                            final BindingResult bindingResult) {
         Show dbShow = (showDTO.getId() == null) ? new Show() : showService.get(showDTO.getId());
 
@@ -86,10 +87,8 @@ public class ShowController {
             redirectAttributes.addFlashAttribute("org.springframework.validation.Binding.showDTO", bindingResult);
             redirectAttributes.addFlashAttribute("userMessageDTO", new UserMessageDTO("Show not saved. Correct the errors", UserMessageDTO.SEVERITY_ERROR));
         } else {
-            dbShow.setShowTimestamp(Calendar.getInstance()); //TODO: Fix the showTimestamp format so it can be read from the front end.
             dbShow = showService.save(dbShow);
             redirectAttributes.addFlashAttribute("userMessageDTO", new UserMessageDTO("Successfully saved show", UserMessageDTO.SEVERITY_SUCCESS));
-
         }
         return "redirect:/show/view/" + (dbShow.getId() == null ? -1 : dbShow.getId());
     }

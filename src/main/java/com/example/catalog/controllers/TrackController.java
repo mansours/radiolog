@@ -41,11 +41,12 @@ public class TrackController {
                 track = new Track();
             model.addAttribute("trackDTO", new TrackDTO(track));
         }
-        return "/trackEdit";
+        return "/track/view";
     }
 
     @PostMapping("/save")
-    public String saveTrack(final RedirectAttributes redirectAttributes, @Valid final TrackDTO trackDTO,
+    public String saveTrack(final RedirectAttributes redirectAttributes,
+                            @Valid final TrackDTO trackDTO,
                             final BindingResult bindingResult) {
         Track dbTrack = (trackDTO.getId() == null) ? new Track() : trackService.get(trackDTO.getId());
 
@@ -61,7 +62,7 @@ public class TrackController {
             redirectAttributes.addFlashAttribute("userMessageDTO", new UserMessageDTO("Successfully saved track", UserMessageDTO.SEVERITY_SUCCESS));
 
         }
-        return "redirect:/track/" + (dbTrack.getId() == null ? -1 : dbTrack.getId());
+        return "redirect:/show/view/" + show.getId();
     }
 
     //TODO: Method to add track to show using id.

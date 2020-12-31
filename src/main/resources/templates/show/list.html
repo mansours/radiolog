@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en" layout:decorate="~{layout/web}"
       xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<!--/*@thymesVar id="#cal" type="com.example.catalog.utilities.CalendarUtil"*/-->
 <!--/*@thymesVar id="list" type="org.springframework.data.domain.Page<com.example.catalog.dto.ShowDTO>"*/-->
 <body>
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" layout:fragment="main">
@@ -44,7 +45,7 @@
     <div class="card mb-2" th:each="show : ${list}">
         <div class="card-body">
             <h6 class="card-title" th:text="${show.title}"></h6>
-            <p class="card-text">This is some text within a card body.</p>
+            <p class="card-text" th:text="${show.programmer +' @ '+ #cal.getPickerFormat(show.showTimestamp, true)}" ></p>
             <a th:href="@{/show/view/{id}(id=${show.id})}" class="card-link">Edit Show</a>
         </div>
     </div>

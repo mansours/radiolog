@@ -20,7 +20,7 @@ public class TrackDTO {
     private Long id;
 
     private ShowDTO show;
-    private Long showId;
+    private Long showId; //For form submission
 
     private String artist;
 
@@ -60,8 +60,10 @@ public class TrackDTO {
         this.tags = track.getTags();
 
         if (createChildren) {
-            this.show = new ShowDTO(track.getShow(), false);
-            this.showId = track.getShow().getId();
+            if (track.getShow() != null) {
+                this.show = new ShowDTO(track.getShow(), false);
+                this.showId = track.getShow().getId();
+            }
         }
     }
 

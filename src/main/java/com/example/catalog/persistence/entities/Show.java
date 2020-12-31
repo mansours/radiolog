@@ -47,6 +47,10 @@ public class Show implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "show")
     private Set<Track> tracks = new HashSet<>(0);
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     //<editor-fold desc="Track Manipulation">
 
     /**
