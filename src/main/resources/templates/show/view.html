@@ -26,6 +26,8 @@
     https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html
     -->
     <!-- Show Information (Bootstrap Cards) -->
+    <th:block th:replace="~{lib :: userMessage(${userMessageDTO})}"/>
+
     <h4>Show Information</h4>
     <div class="card bg-light mb-2 p-1">
         <form th:object="${showDTO}" th:action="@{/show/save}" method="post">
@@ -90,9 +92,6 @@
                     <label for="ShowCatFormControl">Show Category #</label>
                     <input type="number" class="form-control" id="ShowCatFormControl">
                 </div>
-                <!-- Example of thymeleaf debugging
-                <p th:text="${showDTO.code}"></p>
-                -->
                 <div class="col mx-2 my-2">
                     <label for="CodeFormControl">Code</label>
                     <input type="text" class="form-control" id="CodeFormControl" name="code" th:value="*{code}">
@@ -162,114 +161,6 @@
                 <td>0:1:00</td>
                 <td>EN</td>
             </tr>
-            <tr>
-                <td>12</td>
-                <td>10:30</td>
-                <td>11:30</td>
-                <td>CJRU 1280AM</td>
-                <td>album</td>
-                <td>label</td>
-                <td>title</td>
-                <td>categories</td>
-                <td>0:1:00</td>
-                <td>EN</td>
-            </tr>
-            <tr>
-                <td>12</td>
-                <td>10:30</td>
-                <td>11:30</td>
-                <td>CJRU 1280AM</td>
-                <td>album</td>
-                <td>label</td>
-                <td>title</td>
-                <td>categories</td>
-                <td>0:1:00</td>
-                <td>EN</td>
-            </tr>
-            <tr>
-                <td>12</td>
-                <td>10:30</td>
-                <td>11:30</td>
-                <td>CJRU 1280AM</td>
-                <td>album</td>
-                <td>label</td>
-                <td>title</td>
-                <td>categories</td>
-                <td>0:1:00</td>
-                <td>EN</td>
-            </tr>
-            <tr>
-                <td>12</td>
-                <td>10:30</td>
-                <td>11:30</td>
-                <td>CJRU 1280AM</td>
-                <td>album</td>
-                <td>label</td>
-                <td>title</td>
-                <td>categories</td>
-                <td>0:1:00</td>
-                <td>EN</td>
-            </tr>
-            <tr>
-                <td>12</td>
-                <td>10:30</td>
-                <td>11:30</td>
-                <td>CJRU 1280AM</td>
-                <td>album</td>
-                <td>label</td>
-                <td>title</td>
-                <td>categories</td>
-                <td>0:1:00</td>
-                <td>EN</td>
-            </tr>
-            <tr>
-                <td>12</td>
-                <td>10:30</td>
-                <td>11:30</td>
-                <td>CJRU 1280AM</td>
-                <td>album</td>
-                <td>label</td>
-                <td>title</td>
-                <td>categories</td>
-                <td>0:1:00</td>
-                <td>EN</td>
-            </tr>
-            <tr>
-                <td>12</td>
-                <td>10:30</td>
-                <td>11:30</td>
-                <td>CJRU 1280AM</td>
-                <td>album</td>
-                <td>label</td>
-                <td>title</td>
-                <td>categories</td>
-                <td>0:1:00</td>
-                <td>EN</td>
-            </tr>
-            <tr>
-                <td>12</td>
-                <td>10:30</td>
-                <td>11:30</td>
-                <td>CJRU 1280AM</td>
-                <td>album</td>
-                <td>label</td>
-                <td>title</td>
-                <td>categories</td>
-                <td>0:1:00</td>
-                <td>EN</td>
-            </tr>
-            <tr>
-                <td>12</td>
-                <td>10:30</td>
-                <td>11:30</td>
-                <td>CJRU 1280AM</td>
-                <td>album</td>
-                <td>label</td>
-                <td>title</td>
-                <td>categories</td>
-                <td>0:1:00</td>
-                <td>EN</td>
-            </tr>
             </tbody>
         </table>
 
@@ -284,35 +175,28 @@
         <div class="modal fade" id="trackModal" tabindex="-1" role="dialog" aria-labelledby="trackModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="trackModalLabel">Choose a Track</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        Artist
-                        <!-- TODO: Add Autofill to search bar & adjust interface -->
-                        <form class="form my-2 my-lg-0">
-                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                        </form>
-                        Song
-                        <form class="form my-2 my-lg-0">
-                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                        </form>
-                        Album
-                        <form class="form my-2 my-lg-0">
-                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary">Add</button>
-                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
-                    </div>
+                    <form th:action="@{/track/save}" method="post">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="trackModalLabel">Add a Track</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <input type="hidden" name="showId" th:value="${showDTO.id}">
+
+                            ...
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-
 
         <script th:inline="javascript" type="text/javascript">
             /*<![CDATA[*/
