@@ -90,6 +90,9 @@
                     <label for="ShowCatFormControl">Show Category #</label>
                     <input type="number" class="form-control" id="ShowCatFormControl">
                 </div>
+                <!-- Example of thymeleaf debugging
+                <p th:text="${showDTO.code}"></p>
+                -->
                 <div class="col mx-2 my-2">
                     <label for="CodeFormControl">Code</label>
                     <input type="text" class="form-control" id="CodeFormControl" name="code" th:value="*{code}">
@@ -143,7 +146,7 @@
                 <td>album</td>
                 <td>label</td>
                 <td>title</td>
-                <!-- TODO: Fix Categories multiselect drop down menu -->
+                <!-- TODO: Fix Categories (now "tags") multiselect drop down menu -->
                 <td>
                     <select class="mdb-select md-form" multiple>
                         <option value="" disabled selected>Category</option>
@@ -271,6 +274,7 @@
         </table>
 
         <!--    TODO: Display track list as a table here-->
+        <!-- TODO: Create a separate window for track editor -->
         <!-- "Add Track" Button -->
         <button type="button" class="btn btn-sm btn-outline-secondary float-right" onclick="addTrack()">
             Add Track
@@ -308,6 +312,7 @@
                 </div>
             </div>
         </div>
+
 
         <script th:inline="javascript" type="text/javascript">
             /*<![CDATA[*/
