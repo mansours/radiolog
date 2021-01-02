@@ -61,7 +61,7 @@ public class MusicBrainzService {
         return Collections.emptyList(); //Exception reached
     }
 
-    public List<MusicBrainzRecordingDTO> searchRecording(String artistId) {
+    public List<MusicBrainzRecordingDTO> searchRecordings(String artistId) {
         try {
             MusicBrainzRecordingResp resp = webClient.get()
                     .uri("https://musicbrainz.org/ws/2/recording?query=arid:" + artistId + "&fmt=json")
@@ -77,6 +77,32 @@ public class MusicBrainzService {
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             if (e.getStatusCode().is4xxClientError())
                 log.error("Error {} - MusicBrainz Service - Get recordings. Artist Id: '{}'.", e.getRawStatusCode(), artistId);
+            else if (e.getStatusCode().is5xxServerError())
+                log.error("Error {} trying to reach MusicBrainz Service API.", e.getRawStatusCode());
+            else
+                log.error(e.getMessage(), e);
+        } catch (Exception e2) {
+            log.error(e2.getMessage(), e2);
+        }
+        return Collections.emptyList(); //Exception reached
+    }
+
+    public List<MusicBrainzRecordingDTO> getRecording(String recordingId) {
+        try {
+            MusicBrainzRecordingResp resp = webClient.get()
+                    .uri("https://musicbrainz.org/ws/2/recording?query=arid:" + recordingId + "&fmt=json")
+                    .retrieve()
+                    .bodyToMono(MusicBrainzRecordingResp.class)
+                    .block(Duration.ofSeconds(30L));
+            assert resp != null;
+
+            //Map to version and implementation agnostic POJO in case specs change, write business logic and unit tests against agnostic POJO
+            return resp.getRecordings().stream()
+                    .map(MusicBrainzRecordingDTO::new)
+                    .collect(Collectors.toList());
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            if (e.getStatusCode().is4xxClientError())
+                log.error("Error {} - MusicBrainz Service - Get recordings. Recording Id: '{}'.", e.getRawStatusCode(), recordingId);
             else if (e.getStatusCode().is5xxServerError())
                 log.error("Error {} trying to reach MusicBrainz Service API.", e.getRawStatusCode());
             else

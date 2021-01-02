@@ -63,6 +63,7 @@
             artistLookupInput.select2({
                 placeholder: "Search Artist Name",
                 width: '100%',
+                minimumInputLength:3,
                 ajax: {
                     url: /*[[@{/musicBrainz/search/artist}]]*/ "",
                     dataType: 'json',
@@ -89,6 +90,7 @@
             recordingLookupInput.select2({
                 placeholder: "Search Artist Recordings",
                 width: '100%',
+                minimumInputLength:3,
                 ajax: {
                     url: /*[[@{/musicBrainz/search/artistTracks}]]*/ "",
                     dataType: 'json',
