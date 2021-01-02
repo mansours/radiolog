@@ -4,7 +4,11 @@ import com.example.catalog.dto.ShowDTO;
 import com.example.catalog.dto.UserMessageDTO;
 import com.example.catalog.dto.search.ShowSearchDTO;
 import com.example.catalog.persistence.entities.Show;
+import com.example.catalog.persistence.entities.Track;
 import com.example.catalog.persistence.services.ShowService;
+import com.example.catalog.service.MusicBrainzService;
+import com.example.catalog.service.dto.MusicBrainzRecordingDTO;
+import com.example.catalog.service.response.MusicBrainzRecordingResp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -12,10 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -25,10 +26,12 @@ import java.util.HashMap;
 @RequestMapping("/show")
 public class ShowController {
     private final ShowService showService;
+    private final MusicBrainzService musicBrainzService;
 
     @Autowired
-    public ShowController(ShowService showService) {
+    public ShowController(ShowService showService, MusicBrainzService musicBrainzService) {
         this.showService = showService;
+        this.musicBrainzService = musicBrainzService;
     }
 
     @RequestMapping("/list")
@@ -85,5 +88,32 @@ public class ShowController {
         }
         return "redirect:/show/view/" + (dbShow.getId() == null ? -1 : dbShow.getId());
     }
+
+    @PostMapping("/addTrack/fromMusicBrainz")
+    public String addTrackFromMusicBrainz(final RedirectAttributes redirectAttributes,
+                                          @RequestParam final Long showId,
+                                          @RequestParam final String recordingId) {
+        Show dbShow = showService.get(showId);
+        MusicBrainzRecordingDTO recording = musicBrainzService.getRecording(recordingId);
+
+        if (dbShow == null || recording == null) {
+            redirectAttributes.addFlashAttribute("userMessageDTO", new UserMessageDTO("Track could not be added. Either Show Id or Recording Id is missing.", UserMessageDTO.SEVERITY_ERROR));
+        } else {
+            //TODO: Get the ReleaseGroup for album
+            //MusicBrainzReleaseGroupDTO releaseGroup = musicBrainzService.getReleaseGroup(recordingId);
+
+            Track track = new Track();
+            //track.setArtist();
+            //track.setAlbum(); //put release group title here.
+
+            //other attributes for track here.
+
+            dbShow.addTrack(track);
+            dbShow = showService.save(dbShow);
+            redirectAttributes.addFlashAttribute("userMessageDTO", new UserMessageDTO("Successfully added track to show", UserMessageDTO.SEVERITY_SUCCESS));
+        }
+        return "redirect:/show/view/" + (dbShow.getId() == null ? -1 : dbShow.getId());
+    }
+
 
 }

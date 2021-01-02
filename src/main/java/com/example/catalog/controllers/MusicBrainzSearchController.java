@@ -41,7 +41,7 @@ public class MusicBrainzSearchController {
     @GetMapping("/artistTracks")
     public List<SelectOptionDTO> searchArtistTracks(@RequestParam final String artistId,
                                                     @RequestParam final String q) {
-        List<MusicBrainzRecordingDTO> artists = musicBrainzService.searchRecordings(artistId);
+        List<MusicBrainzRecordingDTO> artists = musicBrainzService.searchRecordings(artistId, q);
 
         return artists.stream()
                 .map(x -> new SelectOptionDTO(x.getId(), x.getTitle()))
