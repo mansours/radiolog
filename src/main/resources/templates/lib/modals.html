@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<th:block th:fragment="searchMusicBrainzModal">
+    <div class="modal fade" id="searchMusicBrainzModal" tabindex="-1" role="dialog" aria-labelledby="searchMusicBrainzModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+
+                <form th:action="@{/show/addTrack/fromMusicBrainz}" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="searchMusicBrainzModalLabel">Add Track - Search MusicBrainz</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label for="artistId-lookup" class="col-sm-3 control-label">Artist Name: </label>
+                            <div class="col-sm-8">
+                                <div>
+                                    <select id="artistId-lookup" name="artistId"></select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="recordingId-lookup" class="col-sm-3 control-label">Recording: </label>
+                            <div class="col-sm-8">
+                                <div>
+                                    <select id="recordingId-lookup" name="recordingId"></select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript" type="text/javascript">
+        /*<![CDATA[*/
+        let searchMusicBrainz = null;
+
+        $(document).ready(function () {
+            searchMusicBrainz = function () {
+                let modal = $('#searchMusicBrainzModal');
+
+                modal.modal('show');
+                $('#searchMusicBrainzModalLabel').focus();
+            };
+
+            let artistLookupInput = $('#artistId-lookup');
+            artistLookupInput.select2({
+                placeholder: "Search Artist Name",
+                width: '100%',
+                ajax: {
+                    url: /*[[@{/musicBrainz/search/artist}]]*/ "",
+                    dataType: 'json',
+                    delay: 500,
+                    data: function (params) {
+                        return {
+                            q: params.term
+                        };
+                    },
+                    processResults: function (data, params) {
+                        return {
+                            results: data
+                        };
+                    },
+                    cache: true
+                }
+            });
+
+            // artistLookupInput.on('select2:select', function (e) {
+            //     $('#musicBrainzARID').val(e.params.data.id)
+            // });
+
+            let recordingLookupInput = $('#recordingId-lookup');
+            recordingLookupInput.select2({
+                placeholder: "Search Artist Recordings",
+                width: '100%',
+                ajax: {
+                    url: /*[[@{/musicBrainz/search/artistTracks}]]*/ "",
+                    dataType: 'json',
+                    delay: 500,
+                    data: function (params) {
+                        return {
+                            artistId: artistLookupInput.val(),
+                            q: params.term
+                        };
+                    },
+                    processResults: function (data, params) {
+                        return {
+                            results: data
+                        };
+                    },
+                    cache: true
+                }
+            });
+
+        });
+
+        /*]]>*/
+    </script>
+</th:block>
+
+</body>
+</html>

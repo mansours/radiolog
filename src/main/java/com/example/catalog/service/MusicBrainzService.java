@@ -1,5 +1,7 @@
 package com.example.catalog.service;
 
+import com.example.catalog.service.dto.MusicBrainzArtistDTO;
+import com.example.catalog.service.dto.MusicBrainzRecordingDTO;
 import com.example.catalog.service.response.MusicBrainzArtistResp;
 import com.example.catalog.service.response.MusicBrainzRecordingResp;
 import lombok.extern.slf4j.Slf4j;
@@ -10,11 +12,16 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.Duration;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
+/**
+ * MusicBrainz Service interface.
+ * <p>
+ * https://musicbrainz.org/doc/Development
+ * https://musicbrainz.org/doc/MusicBrainz_API
+ */
 @Slf4j
 @Service
 public class MusicBrainzService {
@@ -25,8 +32,10 @@ public class MusicBrainzService {
         this.webClient = webClient;
     }
 
-    public Map<String,String> searchArtist(String query) {
+    public List<MusicBrainzArtistDTO> searchArtist(String query) {
         try {
+            //Example: https://musicbrainz.org/ws/2/artist/?query=kesha&fmt=json
+
             MusicBrainzArtistResp resp = webClient.get()
                     .uri("https://musicbrainz.org/ws/2/artist/?query=" + query + "&fmt=json")
                     .retrieve()
@@ -36,23 +45,26 @@ public class MusicBrainzService {
             assert resp != null;
 
             //Map to version and implementation agnostic POJO in case specs change, write business logic and unit tests against agnostic POJO
-            return resp.getArtists().stream().collect(Collectors.toMap(x -> x.getName(), x -> x.getId()));
+            return resp.getArtists().stream()
+                    .map(MusicBrainzArtistDTO::new)
+                    .collect(Collectors.toList());
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             if (e.getStatusCode().is4xxClientError())
-                log.error("Error {} - User Management - Get supervisors. Logged in user {}.", e.getRawStatusCode(), query);
+                log.error("Error {} - MusicBrainz Service - Get artist. Query: '{}'.", e.getRawStatusCode(), query);
             else if (e.getStatusCode().is5xxServerError())
-                log.error("Error {} trying to reach User Management API service.", e.getRawStatusCode());
+                log.error("Error {} trying to reach MusicBrainz Service API .", e.getRawStatusCode());
             else
                 log.error(e.getMessage(), e);
         } catch (Exception e2) {
             log.error(e2.getMessage(), e2);
         }
-        return null; //Exception reached
+        return Collections.emptyList(); //Exception reached
     }
-    public List<String> searchRecording(String query) {
+
+    public List<MusicBrainzRecordingDTO> searchRecording(String artistId) {
         try {
             MusicBrainzRecordingResp resp = webClient.get()
-                    .uri("https://musicbrainz.org/ws/2/recording?query=arid:" + query + "&fmt=json")
+                    .uri("https://musicbrainz.org/ws/2/recording?query=arid:" + artistId + "&fmt=json")
                     .retrieve()
                     .bodyToMono(MusicBrainzRecordingResp.class)
                     .block(Duration.ofSeconds(30L));
@@ -60,19 +72,19 @@ public class MusicBrainzService {
 
             //Map to version and implementation agnostic POJO in case specs change, write business logic and unit tests against agnostic POJO
             return resp.getRecordings().stream()
-                    .map(x -> x.getTitle())
+                    .map(MusicBrainzRecordingDTO::new)
                     .collect(Collectors.toList());
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             if (e.getStatusCode().is4xxClientError())
-                log.error("Error {} - User Management - Get supervisors. Logged in user {}.", e.getRawStatusCode(), query);
+                log.error("Error {} - MusicBrainz Service - Get recordings. Artist Id: '{}'.", e.getRawStatusCode(), artistId);
             else if (e.getStatusCode().is5xxServerError())
-                log.error("Error {} trying to reach User Management API service.", e.getRawStatusCode());
+                log.error("Error {} trying to reach MusicBrainz Service API.", e.getRawStatusCode());
             else
                 log.error(e.getMessage(), e);
         } catch (Exception e2) {
             log.error(e2.getMessage(), e2);
         }
-        return null; //Exception reached
+        return Collections.emptyList(); //Exception reached
     }
 
 }

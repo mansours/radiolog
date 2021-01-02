@@ -11,12 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/track")
@@ -63,20 +64,6 @@ public class TrackController {
 
         }
         return "redirect:/show/view/" + show.getId();
-    }
-
-    //TODO: Method to add track to show using id.
-
-    //TODO: Angela search track by artist, or figure out how to narrow down to a track
-    @ResponseBody
-    @GetMapping("/query")
-    public Map<String,String> searchMBz(@RequestParam final String query) {
-        //http://localhost/track/query?query=kesha
-        //https://musicbrainz.org/ws/2/artist/?query=kesha&fmt=json
-        //https://musicbrainz.org/doc/Development
-        //https://musicbrainz.org/doc/MusicBrainz_API
-        Map<String,String> demo = musicBrainzService.searchArtist(query);
-        return demo;
     }
 
 }

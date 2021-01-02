@@ -14,13 +14,13 @@
             </div>
         </div>
     </div>
-<!--
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-0">
-        <h3 class="h3" th:text="${showDTO.title}">Show Title or Date</h3>
-        <div class="btn-toolbar mb-2 mb-md-0">
+    <!--
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-0">
+            <h3 class="h3" th:text="${showDTO.title}">Show Title or Date</h3>
+            <div class="btn-toolbar mb-2 mb-md-0">
+            </div>
         </div>
-    </div>
--->
+    -->
     <!--    TODO: Nika - The form is too tall, find a layout for forms that condenses the inputs
     https://getbootstrap.com/docs/4.0/components/forms/#form-grid
     TODO: Nika - Learn thymeleaf for merging
@@ -34,15 +34,16 @@
         <form th:object="${showDTO}" th:action="@{/show/save}" method="post">
             <input type="hidden" name="id" th:value="*{id}">
 
-                <div class="form-group mx-2 my-2">
-                    <label for="TitleFormControl">Title</label>
-                    <input type="text" class="form-control" id="TitleFormControl" name="title" th:value="*{title}">
-                </div>
+            <div class="form-group mx-2 my-2">
+                <label for="TitleFormControl">Title</label>
+                <input type="text" class="form-control" id="TitleFormControl" name="title" th:value="*{title}">
+            </div>
 
             <div class="row">
                 <div class="col mx-2 my-2">
                     <label for="ProgrammerFormControl">Programmer</label>
-                    <input type="text" class="form-control" id="ProgrammerFormControl" name="programmer" th:value="*{programmer}">
+                    <input type="text" class="form-control" id="ProgrammerFormControl" name="programmer"
+                           th:value="*{programmer}">
                 </div>
 
                 <div class="col mx-2 my-2">
@@ -59,11 +60,13 @@
                 <div class="col mx-2 my-2">
                     <label for="StartFormControl">Date & Time Slot</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" autocomplete="off" id="StartFormControl" name="showTimestamp" th:value="${#cal.getPickerFormat(showDTO.showTimestamp, true)}"/>
+                        <input type="text" class="form-control" autocomplete="off" id="StartFormControl"
+                               name="showTimestamp" th:value="${#cal.getPickerFormat(showDTO.showTimestamp, true)}"/>
                         <div class="input-group-prepend">
                             <span class="input-group-text">to</span>
                         </div>
-                        <input type="text" class="form-control" autocomplete="off" id="EndFormControl" name="nameEnd" th:value="${#cal.getPickerFormat(showDTO.showTimestamp, true)}"/>
+                        <input type="text" class="form-control" autocomplete="off" id="EndFormControl" name="nameEnd"
+                               th:value="${#cal.getPickerFormat(showDTO.showTimestamp, true)}"/>
                     </div>
 
                 </div>
@@ -159,8 +162,13 @@
             Add Track
         </button>
 
+        <button type="button" class="btn btn-sm btn-outline-secondary float-right" onclick="searchMusicBrainz()">
+            Add Track From MusicBrainz
+        </button>
+
         <!-- Add Track Modal (Placeholder Pop Up) -->
-        <div class="modal fade" id="trackModal" tabindex="-1" role="dialog" aria-labelledby="trackModalLabel" aria-hidden="true">
+        <div class="modal fade" id="trackModal" tabindex="-1" role="dialog" aria-labelledby="trackModalLabel"
+             aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <form th:action="@{/track/save}" method="post">
@@ -205,6 +213,7 @@
 
     </div>
 
+    <th:block th:replace="~{lib/modals :: searchMusicBrainzModal}"/>
 </main>
 </body>
 </html>

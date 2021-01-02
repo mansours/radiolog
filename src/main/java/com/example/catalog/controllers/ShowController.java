@@ -2,12 +2,9 @@ package com.example.catalog.controllers;
 
 import com.example.catalog.dto.ShowDTO;
 import com.example.catalog.dto.UserMessageDTO;
-import com.example.catalog.dto.search.AlbumSearchDTO;
 import com.example.catalog.dto.search.ShowSearchDTO;
 import com.example.catalog.persistence.entities.Show;
 import com.example.catalog.persistence.services.ShowService;
-import com.example.catalog.persistence.services.TrackService;
-import com.example.catalog.service.MusicBrainzService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -15,27 +12,23 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/show")
 public class ShowController {
     private final ShowService showService;
-    private final TrackService trackService;
-    private final MusicBrainzService musicBrainzService;
 
     @Autowired
-    public ShowController(ShowService showService, TrackService trackService, MusicBrainzService musicBrainzService) {
+    public ShowController(ShowService showService) {
         this.showService = showService;
-        this.trackService = trackService;
-        this.musicBrainzService = musicBrainzService;
     }
 
     @RequestMapping("/list")
@@ -92,21 +85,5 @@ public class ShowController {
         }
         return "redirect:/show/view/" + (dbShow.getId() == null ? -1 : dbShow.getId());
     }
-
-    @GetMapping("/test")
-    public String editShow(final ModelMap model, String title) {
-        Map<String,String> demo = musicBrainzService.searchArtist(title);
-        model.addAttribute("hi", demo.keySet());
-        return "show/test";
-    }
-
-
-
-//    @PostMapping("/test")
-//    public String showShow(final ModelMap model, String percentage){
-//
-//    }
-
-
 
 }
