@@ -28,6 +28,8 @@ public class ShowDTO {
 
     private String guests;
 
+    //TODO: Add "Show Category #" field
+
     @NotNull(message = "Language of this show is required.")
     private String language;
 

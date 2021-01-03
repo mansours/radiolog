@@ -12,6 +12,8 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.example.catalog.utilities.CalendarUtil.CALENDAR_PICKER_PATTERN_TIMESTAMP;
+
 @Data
 @NoArgsConstructor
 public class TrackDTO {
@@ -36,10 +38,10 @@ public class TrackDTO {
     private String language;
 
     // TODO: what do i use as pattern
-    @DateTimeFormat(pattern = "")
+    @DateTimeFormat(pattern = CALENDAR_PICKER_PATTERN_TIMESTAMP)
     private Calendar trackStart;
 
-    @DateTimeFormat(pattern = "")
+    @DateTimeFormat(pattern = CALENDAR_PICKER_PATTERN_TIMESTAMP)
     private Calendar trackEnd;
 
     private Set<Tag> tags = new HashSet<>(0);

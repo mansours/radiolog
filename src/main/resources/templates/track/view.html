@@ -7,12 +7,7 @@
 
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" layout:fragment="main">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 mb-2 border-bottom">
-        <h1>Show Editor</h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-            <div class="btn-group mr-2">
-                <button type="button" class="btn btn-sm btn-outline-secondary">Add Track</button>
-            </div>
-        </div>
+        <h1>Track Editor</h1>
     </div>
     <!--
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-0">
@@ -21,21 +16,87 @@
             </div>
         </div>
     -->
-    <!--    TODO: Nika - The form is too tall, find a layout for forms that condenses the inputs
-    https://getbootstrap.com/docs/4.0/components/forms/#form-grid
+    <!--
     TODO: Nika - Learn thymeleaf for merging
     https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html
     -->
-    <!-- Show Information (Bootstrap Cards) -->
-    <h4>Show Information</h4>
+    <!-- Track Information (Bootstrap Cards) -->
+    <h4>Track Information</h4>
     <div class="card bg-light mb-2 p-1">
         <form th:object="${trackDTO}" th:action="@{/track/save}" method="post">
             <input type="hidden" name="id" th:value="*{id}">
 
-            <div class="form-group mx-2 my-2">
-                <label for="TitleFormControl">Title</label>
-                <input type="text" class="form-control" id="TitleFormControl" name="title" th:value="*{title}">
+            <!-- Pre populated? && do we need show id? (and id?)-->
+            <div class="row">
+                <div class="col mx-2 my-2">
+                    <label for="TrackShow">Show</label>
+                    <input type="text" class="form-control" id="TrackShow" name="show" th:value="*{show}">
+                </div>
+
+                <div class="col mx-2 my-2">
+                    <label for="TrackTitle">Title</label>
+                    <input type="text" class="form-control" id="TrackTitle" name="title" th:value="*{title}">
+                </div>
+
+                <div class="col mx-2 my-2">
+                    <label for="TrackArtist">Artist</label>
+                    <input type="text" class="form-control" id="TrackArtist" name="artist" th:value="*{artist}">
+                </div>
             </div>
+
+            <div class="row">
+                <div class="col mx-2 my-2">
+                    <label for="TrackAlbum">Album</label>
+                    <input type="text" class="form-control" id="TrackAlbum" name="album" th:value="*{album}">
+                </div>
+
+                <div class="col mx-2 my-2">
+                    <label for="TrackLabel">Label</label>
+                    <input type="text" class="form-control" id="TrackLAbel" name="label" th:value="*{label}">
+                </div>
+
+                <div class="col mx-2 my-2">
+                    <label for="TrackLang">Language</label>
+                    <input type="text" class="form-control" id="TrackLang" name="language" th:value="*{language}">
+                </div>
+            </div>
+
+            <!-- TODO: fix - in-line javascript is not working -->
+            <div class="row">
+                <div class="col mx-2 my-2">
+                    <label for="TrackStart">Date & Time Slot</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" autocomplete="off" id="TrackStart" name="trackStart" th:value="${#cal.getPickerFormat(trackDTO.trackStart, true)}"/>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">to</span>
+                        </div>
+                        <input type="text" class="form-control" autocomplete="off" id="TrackEnd" name="trackEnd" th:value="${#cal.getPickerFormat(trackDTO.trackEnd, true)}"/>
+                    </div>
+
+                </div>
+                <script th:inline="javascript" type="text/javascript">
+                    /*<![CDATA[*/
+                    $(document).ready(function () {
+                        let modifiedDateStartInput = $("#StartFormControl");
+                        let modifiedDateEndInput = $("#EndFormControl");
+
+                        modifiedDateStartInput.datetimepicker(config.eonasdan.defaultOption);
+                        modifiedDateEndInput.datetimepicker(config.eonasdan.defaultEndOption);
+
+                        modifiedDateStartInput.on("dp.change", function (e) {
+                            modifiedDateEndInput.data("DateTimePicker").minDate(e.date);
+                        });
+                        modifiedDateEndInput.on("dp.change", function (e) {
+                            modifiedDateStartInput.data("DateTimePicker").maxDate(e.date);
+                        });
+
+                    });
+
+                    /*]]>*/
+                </script>
+            </div>
+
+            <!-- Will we be adding the tags/categories in the track DTO? -->
 
             <div class="form-group">
                 <div class="btn-group float-right mx-2 my-2">

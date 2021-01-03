@@ -8,11 +8,6 @@
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" layout:fragment="main">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 mb-2 border-bottom">
         <h1>Show Editor</h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-            <div class="btn-group mr-2">
-                <button type="button" class="btn btn-sm btn-outline-secondary">Add Track</button>
-            </div>
-        </div>
     </div>
 <!--
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-0">
@@ -88,6 +83,7 @@
                 </script>
             </div>
             <div class="row">
+                <!-- TODO: DTO field needs to be created -->
                 <div class="col mx-2 my-2">
                     <label for="ShowCatFormControl">Show Category #</label>
                     <input type="number" class="form-control" id="ShowCatFormControl">
@@ -130,7 +126,7 @@
                 <th>Album</th>
                 <th>Label</th>
                 <th>Title</th>
-                <th>Categories</th> <!-- Name: "Checkboxes?" -->
+                <th>Tags</th>
                 <th>Length</th>
                 <th>Language</th>
             </tr>
@@ -173,7 +169,7 @@
 
         <!-- "Add Track" Modal (Placeholder Pop Up) -->
         <div class="modal fade" id="trackModal" tabindex="-1" role="dialog" aria-labelledby="trackModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
                 <div class="modal-content">
                     <form th:action="@{/track/save}" method="post">
                         <div class="modal-header">
@@ -183,11 +179,42 @@
                             </button>
                         </div>
                         <div class="modal-body">
-
+                            <!-- TODO: Connect to TrackDTO and Controller -->
                             <input type="hidden" name="showId" th:value="${showDTO.id}">
+                            <!-- Ajax Programming?
+                            <div class="form-group mx-2 my-2">
+                                <label for="TrackTitle">Title</label>
+                                <input type="text" class="form-control" id="TrackTitle" name="title" th:value="*{title}">
+                            </div>
+                            -->
+                            <div class="row">
+                                <div class="col mx-2 my-2">
+                                    <label for="TrackTitle">Title</label>
+                                    <input type="text" class="form-control" id="TrackTitle" name="title">
+                                </div>
 
-                            ...
+                                <div class="col mx-2 my-2">
+                                    <label for="TrackArtist">Artist</label>
+                                    <input type="text" class="form-control" id="TrackArtist" name="artist">
+                                </div>
+                            </div>
 
+                            <div class="row">
+                                <div class="col mx-2 my-2">
+                                    <label for="TrackAlbum">Album</label>
+                                    <input type="text" class="form-control" id="TrackAlbum" name="album">
+                                </div>
+
+                                <div class="col mx-2 my-2">
+                                    <label for="TrackLabel">Label</label>
+                                    <input type="text" class="form-control" id="TrackLAbel" name="label">
+                                </div>
+
+                                <div class="col mx-2 my-2">
+                                    <label for="TrackLang">Language</label>
+                                    <input type="text" class="form-control" id="TrackLang" name="language">
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
