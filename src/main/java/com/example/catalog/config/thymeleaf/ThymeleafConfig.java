@@ -7,8 +7,13 @@ import org.springframework.context.annotation.Configuration;
 public class ThymeleafConfig {
 
     @Bean
-    public CalendarUtilDialect ruCalendarLibDialect() {
+    public CalendarUtilDialect calendarUtilDialect() {
         return new CalendarUtilDialect();
+    }
+
+    @Bean
+    public StringUtilDialect stringUtilDialect() {
+        return new StringUtilDialect();
     }
 
 }

@@ -1,6 +1,8 @@
 package com.example.catalog.persistence.entities;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Calendar;
@@ -10,6 +12,8 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "track")
+@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Track {
     private static final long serialVersionUID = 1L;
 
@@ -22,6 +26,7 @@ public class Track {
     @JoinColumn(name = "show_id", nullable = false)
     private Show show;
 
+    @EqualsAndHashCode.Include
     @Column(name = "track_start")
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar trackStart;
@@ -30,6 +35,7 @@ public class Track {
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar trackEnd;
 
+    @EqualsAndHashCode.Include
     @Column(name = "artist")
     private String artist;
 
@@ -39,6 +45,7 @@ public class Track {
     @Column(name = "label")
     private String label;
 
+    @EqualsAndHashCode.Include
     @Column(name = "title")
     private String title;
 

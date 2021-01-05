@@ -16,10 +16,7 @@
             </div>
         </div>
     -->
-    <!--
-    TODO: Nika - Learn thymeleaf for merging
-    https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html
-    -->
+
     <!-- Show Information (Bootstrap Cards) -->
     <th:block th:replace="~{lib :: userMessage(${userMessageDTO})}"/>
 
@@ -134,39 +131,25 @@
                 <th>Language</th>
             </tr>
             </thead>
-            <!-- TODO: Add categories as drop down menu (multiple selection) -->
             <tbody>
-            <tr>
+            <tr th:each="track : ${showDTO.tracks}">
                 <td>12</td>
-                <td>10:30</td>
-                <td>11:30</td>
-                <td>CJRU 1280AM</td>
-                <td>album</td>
-                <td>label</td>
-                <td>title</td>
-                <!-- TODO: Fix Categories (now "tags") multiselect drop down menu -->
-                <td>
-                    <select class="mdb-select md-form" multiple>
-                        <option value="" disabled selected>Category</option>
-                        <option value="1">cancon</option>
-                        <option value="2">new</option>
-                        <option value="3">hit</option>
-                        <option value="4">instrmntl</option>
-                        <option value="5">TO</option>
-                        <option value="6">FemCon</option>
-                        <option value="7">Theme</option>
-                    </select>
-                </td>
-                <td>0:1:00</td>
-                <td>EN</td>
+                <td th:text="${#cal.getTimeFormatted(track.trackStart)}">10:30</td>
+                <td th:text="${#cal.getTimeFormatted(track.trackEnd)}">11:30</td>
+                <td th:text="${track.artist}">CJRU 1280AM</td>
+                <td th:text="${track.album}">album</td>
+                <td th:text="${track.label}">label</td>
+                <td th:text="${track.title}">title</td>
+                <td th:text="${track.getTagsAsString()}"></td>
+                <td th:text="${#cal.getLengthInMinutes(track.trackStart, track.trackEnd)}">0:1:00</td>
+                <td th:text="${showDTO.language}">EN</td>
             </tr>
             </tbody>
         </table>
 
-        <!--    TODO: Display track list as a table here-->
-        <!-- TODO: Create a separate window for track editor -->
         <!-- "Add Track" Button -->
-        <button type="button" class="btn btn-sm btn-outline-secondary float-right" onclick="addTrack()">
+        <button type="button" class="btn btn-sm btn-outline-secondary float-right"
+                th:data-sid="${showDTO.id}" onclick="addTrack(this.getAttribute('data-sid'))">
             Add Track
         </button>
 
@@ -174,83 +157,9 @@
             Add Track From MusicBrainz
         </button>
 
-        <!-- "Add Track" Modal (Placeholder Pop Up) -->
-        <div class="modal fade" id="trackModal" tabindex="-1" role="dialog" aria-labelledby="trackModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
-                <div class="modal-content">
-                    <form th:action="@{/track/save}" method="post">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="trackModalLabel">Add a Track</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <!-- TODO: Connect to TrackDTO and Controller -->
-                            <input type="hidden" name="showId" th:value="${showDTO.id}">
-                            <!-- Ajax Programming?
-                            <div class="form-group mx-2 my-2">
-                                <label for="TrackTitle">Title</label>
-                                <input type="text" class="form-control" id="TrackTitle" name="title" th:value="*{title}">
-                            </div>
-                            -->
-                            <div class="row">
-                                <div class="col mx-2 my-2">
-                                    <label for="TrackTitle">Title</label>
-                                    <input type="text" class="form-control" id="TrackTitle" name="title">
-                                </div>
-
-                                <div class="col mx-2 my-2">
-                                    <label for="TrackArtist">Artist</label>
-                                    <input type="text" class="form-control" id="TrackArtist" name="artist">
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col mx-2 my-2">
-                                    <label for="TrackAlbum">Album</label>
-                                    <input type="text" class="form-control" id="TrackAlbum" name="album">
-                                </div>
-
-                                <div class="col mx-2 my-2">
-                                    <label for="TrackLabel">Label</label>
-                                    <input type="text" class="form-control" id="TrackLAbel" name="label">
-                                </div>
-
-                                <div class="col mx-2 my-2">
-                                    <label for="TrackLang">Language</label>
-                                    <input type="text" class="form-control" id="TrackLang" name="language">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Add</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <script th:inline="javascript" type="text/javascript">
-            /*<![CDATA[*/
-            let addTrack = null;
-
-            $(document).ready(function () {
-                addTrack = function () {
-                    let modal = $('#trackModal');
-
-                    modal.modal('show');
-                    $('#trackModalLabel').focus();
-                };
-
-            });
-
-            /*]]>*/
-        </script>
-
     </div>
 
+    <th:block th:replace="~{lib/modals :: editTrack}"/>
     <th:block th:replace="~{lib/modals :: searchMusicBrainzModal}"/>
 </main>
 </body>

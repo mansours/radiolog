@@ -66,19 +66,21 @@
                 <div class="col mx-2 my-2">
                     <label for="TrackStart">Date & Time Slot</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" autocomplete="off" id="TrackStart" name="trackStart" th:value="${#cal.getPickerFormat(trackDTO.trackStart, true)}"/>
+                        <input type="text" class="form-control" autocomplete="off" id="TrackStart" name="trackStart"
+                               th:value="${#cal.getPickerFormat(trackDTO.trackStart, true)}"/>
                         <div class="input-group-prepend">
                             <span class="input-group-text">to</span>
                         </div>
-                        <input type="text" class="form-control" autocomplete="off" id="TrackEnd" name="trackEnd" th:value="${#cal.getPickerFormat(trackDTO.trackEnd, true)}"/>
+                        <input type="text" class="form-control" autocomplete="off" id="TrackEnd" name="trackEnd"
+                               th:value="${#cal.getPickerFormat(trackDTO.trackEnd, true)}"/>
                     </div>
 
                 </div>
                 <script th:inline="javascript" type="text/javascript">
                     /*<![CDATA[*/
                     $(document).ready(function () {
-                        let modifiedDateStartInput = $("#StartFormControl");
-                        let modifiedDateEndInput = $("#EndFormControl");
+                        let modifiedDateStartInput = $("#TrackStart");
+                        let modifiedDateEndInput = $("#TrackEnd");
 
                         modifiedDateStartInput.datetimepicker(config.eonasdan.defaultOption);
                         modifiedDateEndInput.datetimepicker(config.eonasdan.defaultEndOption);
@@ -89,7 +91,6 @@
                         modifiedDateEndInput.on("dp.change", function (e) {
                             modifiedDateStartInput.data("DateTimePicker").maxDate(e.date);
                         });
-
                     });
 
                     /*]]>*/

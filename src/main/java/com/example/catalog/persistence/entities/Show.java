@@ -1,8 +1,6 @@
 package com.example.catalog.persistence.entities;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,6 +11,8 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "show")
+@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Show implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -21,6 +21,7 @@ public class Show implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @EqualsAndHashCode.Include
     @Column(name = "title", nullable = false)
     private String title;
 
@@ -30,6 +31,7 @@ public class Show implements Serializable {
     @Column(name = "email", nullable = false)
     private String email;
 
+    @EqualsAndHashCode.Include
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "show_ts", nullable = false)
     private Calendar showTimestamp;

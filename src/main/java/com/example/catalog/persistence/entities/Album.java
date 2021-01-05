@@ -1,6 +1,8 @@
 package com.example.catalog.persistence.entities;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,6 +13,8 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "app_album")
+@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Album implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -19,9 +23,11 @@ public class Album implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @EqualsAndHashCode.Include
     @Column(name = "name", nullable = false)
     private String name;
 
+    @EqualsAndHashCode.Include
     @Column(name = "release_date")
     @Temporal(TemporalType.DATE)
     private Calendar releaseDate;
