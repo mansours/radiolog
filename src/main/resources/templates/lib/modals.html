@@ -9,7 +9,7 @@
             <div class="modal-content">
                 <form th:action="@{/track/save}" method="post">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="trackModalLabel">Add a Track</h5>
+                        <h5 class="modal-title" id="trackModalLabel">Track Editor</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -17,12 +17,8 @@
                     <div class="modal-body">
                         <!-- TODO: Connect to TrackDTO and Controller -->
                         <input type="hidden" name="showId" id="TrackShowId">
-                        <!-- Ajax Programming?
-                        <div class="form-group mx-2 my-2">
-                            <label for="TrackTitle">Title</label>
-                            <input type="text" class="form-control" id="TrackTitle" name="title" th:value="*{title}">
-                        </div>
-                        -->
+                        <input type="hidden" name="id" id="TrackId">
+
                         <div class="row">
                             <div class="col mx-2 my-2">
                                 <label for="TrackTitle">Title</label>
@@ -34,8 +30,6 @@
                                 <input type="text" class="form-control" id="TrackArtist" name="artist">
                             </div>
                         </div>
-
-                        <!-- TODO: Add start and end time picker -->
 
                         <div class="row">
                             <div class="col mx-2 my-2">
@@ -55,20 +49,57 @@
 
                         </div>
 
-                        <select id="TrackTags" name="tagIds" class="mdb-select md-form" multiple>
-<!--                            <option value="1">cancon</option>-->
-<!--                            <option value="2">new</option>-->
-<!--                            <option value="3">hit</option>-->
-<!--                            <option value="4">instrmntl</option>-->
-<!--                            <option value="5">TO</option>-->
-<!--                            <option value="6">FemCon</option>-->
-<!--                            <option value="7">Theme</option>-->
-                        </select>
+                        <div>
+<!--                        TODO: Nika - Make me pretty paweeze-->
+                            <select id="TrackTags" name="tagIds" class="mdb-select md-form" multiple>
+        <!--                            <option value="1">cancon</option>-->
+        <!--                            <option value="2">new</option>-->
+        <!--                            <option value="3">hit</option>-->
+        <!--                            <option value="4">instrmntl</option>-->
+        <!--                            <option value="5">TO</option>-->
+        <!--                            <option value="6">FemCon</option>-->
+        <!--                            <option value="7">Theme</option>-->
+                            </select>
+                        </div>
+
+                        <div>
+                            <div class="col mx-2 my-2">
+                                <label for="track-timeline-input">Date & Time Slot</label>
+                                <div class="input-group" id="track-timeline-input">
+                                    <input type="text" class="form-control" autocomplete="off" id="TrackStart" name="trackStart"/>
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">to</span>
+                                    </div>
+                                    <input type="text" class="form-control" autocomplete="off" id="TrackEnd" name="trackEnd"/>
+                                </div>
+
+                            </div>
+                            <script th:inline="javascript" type="text/javascript">
+                                /*<![CDATA[*/
+                                $(document).ready(function () {
+                                    let modifiedDateStartInput = $("#TrackStart");
+                                    let modifiedDateEndInput = $("#TrackEnd");
+
+                                    modifiedDateStartInput.datetimepicker(config.eonasdan.defaultOption);
+                                    modifiedDateEndInput.datetimepicker(config.eonasdan.defaultEndOption);
+
+                                    modifiedDateStartInput.on("dp.change", function (e) {
+                                        modifiedDateEndInput.data("DateTimePicker").minDate(e.date);
+                                    });
+                                    modifiedDateEndInput.on("dp.change", function (e) {
+                                        modifiedDateStartInput.data("DateTimePicker").maxDate(e.date);
+                                    });
+
+                                });
+
+                                /*]]>*/
+                            </script>
+                        </div>
 
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Add</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </div>
                 </form>
             </div>
@@ -78,8 +109,11 @@
     <script th:inline="javascript" type="text/javascript">
         /*<![CDATA[*/
         let addTrack = null;
+        let editTrack = null;
 
         $(document).ready(function () {
+
+            //Initialize Select2 input
             $("#TrackTags").select2({
                 placeholder: "Select Track Tags",
                 width: '100%',
@@ -103,10 +137,43 @@
                 }
             });
 
-            addTrack = function (showId) {
+            addTrack = function (showId) { //New Blank Track
                 let modal = $('#trackModal');
 
                 $('#TrackShowId').val(showId);
+
+                //TODO: nika - Clear the inputs so that if they close and reopen its not weird info
+                $('#TrackId').val(""); //blanks will do
+
+
+                $('#example-startTimestamp').val(data.startTimestamp);
+                $('#example-endTimestamp').val(data.endTimestamp);
+
+                $('#TrackTags').val(null).trigger("change"); //Reset tags
+
+                modal.modal('show');
+                $('#trackModalLabel').focus();
+            };
+
+            editTrack = function (trackId) { //New Blank Track
+                let modal = $('#trackModal');
+
+                $('#TrackId').val(trackId); //Set the trackId
+
+                //Get and load the track info
+                let srcprefix = /*[[@{/track}]]*/ "";
+                $.get(srcprefix + "/" + trackId, function (data) {
+                    $('#TrackId').val(data.id);
+                    $('#TrackTitle').val(data.title);
+                    //TODO: nika - continue loading the inputs
+
+                    //TODO: nika - take a look at this and set the tags accordingly
+                    //https://select2.org/programmatic-control/add-select-clear-items
+                    //https://select2.org/programmatic-control/methods#examples
+
+                    $('#example-startTimestamp').val(data.startTimestamp);
+                    $('#example-endTimestamp').val(data.endTimestamp);
+                }, "json");
 
                 modal.modal('show');
                 $('#trackModalLabel').focus();

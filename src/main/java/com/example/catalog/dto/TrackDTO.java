@@ -3,13 +3,16 @@ package com.example.catalog.dto;
 import com.example.catalog.persistence.entities.Show;
 import com.example.catalog.persistence.entities.Tag;
 import com.example.catalog.persistence.entities.Track;
-import com.example.catalog.utilities.StringUtil;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.example.catalog.utilities.CalendarUtil.CALENDAR_PICKER_PATTERN_TIMESTAMP;
@@ -18,11 +21,12 @@ import static com.example.catalog.utilities.CalendarUtil.CALENDAR_PICKER_PATTERN
 @NoArgsConstructor
 public class TrackDTO {
 
-    //track_id, show_id, track_start, track_end, artist, album, label, title, language, tags
     private Long id;
 
+    @JsonIgnore
     private ShowDTO show;
-    private Long showId; //For form submission
+
+    private Long showId; //For forms
 
     private String artist;
 
@@ -37,14 +41,17 @@ public class TrackDTO {
     @NotNull(message = "Language of this track is required.")
     private String language;
 
-    // TODO: what do i use as pattern
     @DateTimeFormat(pattern = CALENDAR_PICKER_PATTERN_TIMESTAMP)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = CALENDAR_PICKER_PATTERN_TIMESTAMP, timezone = "America/Toronto")
     private Calendar trackStart;
 
     @DateTimeFormat(pattern = CALENDAR_PICKER_PATTERN_TIMESTAMP)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = CALENDAR_PICKER_PATTERN_TIMESTAMP, timezone = "America/Toronto")
     private Calendar trackEnd;
 
-    private Set<Tag> tags = new HashSet<>(0);
+    private List<TagDTO> tags = new ArrayList<>(0);
+
+    @JsonIgnore
     private List<Long> tagIds = new ArrayList<>(0); //Input from the edit track form
 
     public TrackDTO(final Track track) {
@@ -60,18 +67,17 @@ public class TrackDTO {
         this.language = track.getLanguage();
         this.trackStart = track.getTrackStart();
         this.trackEnd = track.getTrackEnd();
-        this.tags = track.getTags();
 
-        if (this.tags != null) // the form needs a list of ids for the dropdown selection
-            tagIds = this.tags.stream()
-                    .map(Tag::getId)
-                    .collect(Collectors.toList());
+        if (track.getShow() != null) this.showId = track.getShow().getId();
 
         if (createChildren) {
-            if (track.getShow() != null) {
+            if (track.getShow() != null)
                 this.show = new ShowDTO(track.getShow(), false);
-                this.showId = track.getShow().getId();
-            }
+
+            if (track.getTags() != null)
+                this.tags = track.getTags().stream()
+                        .map(TagDTO::new)
+                        .collect(Collectors.toList());
         }
     }
 
@@ -92,11 +98,12 @@ public class TrackDTO {
         track.getTags().addAll(tags); // Union sets (add ones from new set)
     }
 
+    @JsonIgnore
     public String getTagsAsString() {
         if (tags == null) return "";
 
         return tags.stream()
-                .map(Tag::getValue)
+                .map(TagDTO::getValue)
                 .sorted()
                 .collect(Collectors.joining(", "));
     }

@@ -14,10 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -48,6 +45,16 @@ public class TrackController {
             model.addAttribute("trackDTO", new TrackDTO(track));
         }
         return "/track/view";
+    }
+
+    @ResponseBody
+    @GetMapping("/{id}")
+    public TrackDTO getTrack(@PathVariable final Long id) {
+        Track track = trackService.get(id);
+
+        if (track == null) track = new Track(); //TODO: Replace with throw an error.
+
+        return new TrackDTO(track);
     }
 
     @PostMapping("/save")

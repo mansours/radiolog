@@ -129,6 +129,7 @@
                 <th>Tags</th>
                 <th>Length</th>
                 <th>Language</th>
+                <th>Edit</th>
             </tr>
             </thead>
             <tbody>
@@ -143,6 +144,12 @@
                 <td th:text="${track.getTagsAsString()}"></td>
                 <td th:text="${#cal.getLengthInMinutes(track.trackStart, track.trackEnd)}">0:1:00</td>
                 <td th:text="${showDTO.language}">EN</td>
+                <td>
+                    <button type="button" class="btn btn-sm btn-outline-secondary float-right"
+                            th:data-tid="${track.id}" onclick="editTrack(this.getAttribute('data-tid'))">
+                        Edit
+                    </button>
+                </td>
             </tr>
             </tbody>
         </table>
