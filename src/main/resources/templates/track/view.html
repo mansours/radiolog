@@ -26,7 +26,6 @@
         <form th:object="${trackDTO}" th:action="@{/track/save}" method="post">
             <input type="hidden" name="id" th:value="*{id}">
 
-            <!-- Pre populated? && do we need show id? (and id?)-->
             <div class="row">
                 <div class="col mx-2 my-2">
                     <label for="TrackShow">Show</label>
@@ -157,7 +156,7 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="trackModalLabel">Choose a Track</h5>
+                        <h5 class="modal-title" id="trackModalLabel">Add Track</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -167,7 +166,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Add</button>
+                        <button type="button" class="btn btn-primary">Save</button>
                     </div>
                 </div>
             </div>

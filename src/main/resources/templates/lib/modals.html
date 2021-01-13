@@ -2,10 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
 
-<th:block th:fragment="editTrack">
+<!-- Modal: addTrack -->
+<th:block th:fragment="addTrack">
     <div class="modal fade" id="trackModal" tabindex="-1" role="dialog" aria-labelledby="trackModalLabel"
          aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <form th:action="@{/track/save}" method="post">
                     <div class="modal-header">
@@ -15,7 +16,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <!-- TODO: Connect to TrackDTO and Controller -->
+                        <!-- TODO: Connect to TrackDTO and Controller , th:value="*{showID}" doesn't work -->
                         <input type="hidden" name="showId" id="TrackShowId">
                         <input type="hidden" name="id" id="TrackId">
 
@@ -39,7 +40,7 @@
 
                             <div class="col mx-2 my-2">
                                 <label for="TrackLabel">Label</label>
-                                <input type="text" class="form-control" id="TrackLAbel" name="label">
+                                <input type="text" class="form-control" id="TrackLabel" name="label">
                             </div>
 
                             <div class="col mx-2 my-2">
@@ -49,20 +50,24 @@
 
                         </div>
 
-                        <div>
-<!--                        TODO: Nika - Make me pretty paweeze-->
-                            <select id="TrackTags" name="tagIds" class="mdb-select md-form" multiple>
-        <!--                            <option value="1">cancon</option>-->
-        <!--                            <option value="2">new</option>-->
-        <!--                            <option value="3">hit</option>-->
-        <!--                            <option value="4">instrmntl</option>-->
-        <!--                            <option value="5">TO</option>-->
-        <!--                            <option value="6">FemCon</option>-->
-        <!--                            <option value="7">Theme</option>-->
-                            </select>
+                        <div class="row">
+                            <div class="col mx-2 my-2">
+                                <!--                        TODO: Nika - Make me pretty paweeze-->
+                                <!-- TODO: fix options -->
+                                <label for="TrackTags">Tags</label>
+                                <select id="TrackTags" name="tagIds" class="mdb-select md-form mx-2 my-2" multiple>
+                                    <option value="1">cancon</option>
+                                    <option value="2">new</option>
+                                    <option value="3">hit</option>
+                                    <option value="4">instrmntl</option>
+                                    <option value="5">TO</option>
+                                    <option value="6">FemCon</option>
+                                    <option value="7">Theme</option>
+                                </select>
+                            </div>
                         </div>
 
-                        <div>
+                        <div class="row">
                             <div class="col mx-2 my-2">
                                 <label for="track-timeline-input">Date & Time Slot</label>
                                 <div class="input-group" id="track-timeline-input">
@@ -139,15 +144,19 @@
 
             addTrack = function (showId) { //New Blank Track
                 let modal = $('#trackModal');
+                console.log(showId);
 
                 $('#TrackShowId').val(showId);
+
 
                 //TODO: nika - Clear the inputs so that if they close and reopen its not weird info
                 $('#TrackId').val(""); //blanks will do
 
+                //TODO: Fix this - error is coming from here
+                // $('#example-startTimestamp').val(data.startTimestamp);
+                // $('#example-endTimestamp').val(data.endTimestamp);
 
-                $('#example-startTimestamp').val(data.startTimestamp);
-                $('#example-endTimestamp').val(data.endTimestamp);
+
 
                 $('#TrackTags').val(null).trigger("change"); //Reset tags
 
@@ -166,10 +175,14 @@
                     $('#TrackId').val(data.id);
                     $('#TrackTitle').val(data.title);
                     //TODO: nika - continue loading the inputs
-
+                    $('#TrackArtist').val(data.artist);
+                    $('#TrackAlbum').val(data.album);
+                    $('#TrackLabel').val(data.label);
+                    $('#TrackLang').val(data.language);
                     //TODO: nika - take a look at this and set the tags accordingly
                     //https://select2.org/programmatic-control/add-select-clear-items
                     //https://select2.org/programmatic-control/methods#examples
+                    console.log($('#TrackTags'));
 
                     $('#example-startTimestamp').val(data.startTimestamp);
                     $('#example-endTimestamp').val(data.endTimestamp);
@@ -185,7 +198,7 @@
     </script>
 </th:block>
 
-
+<!-- Modal: searchMusicBrainzModal -->
 <th:block th:fragment="searchMusicBrainzModal">
     <div class="modal fade" id="searchMusicBrainzModal" tabindex="-1" role="dialog"
          aria-labelledby="searchMusicBrainzModalLabel" aria-hidden="true">
