@@ -69,16 +69,16 @@ public class TrackDTO {
         this.trackEnd = track.getTrackEnd();
 
         if (track.getShow() != null) this.showId = track.getShow().getId();
+        if (track.getTags() != null)
+            this.tags = track.getTags().stream()
+                    .map(TagDTO::new)
+                    .collect(Collectors.toList());
 
         if (createChildren) {
             if (track.getShow() != null)
                 this.show = new ShowDTO(track.getShow(), false);
-
-            if (track.getTags() != null)
-                this.tags = track.getTags().stream()
-                        .map(TagDTO::new)
-                        .collect(Collectors.toList());
         }
+
     }
 
     public void mergeInto(final Track track, final Show show, final List<Tag> tags) {

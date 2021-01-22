@@ -53,16 +53,16 @@
                         <div class="row">
                             <div class="col mx-2 my-2">
                                 <!--                        TODO: Nika - Make me pretty paweeze-->
-                                <!-- TODO: fix options -->
+                                <!-- TODO: fix options (doesn't show up) -->
                                 <label for="TrackTags">Tags</label>
-                                <select id="TrackTags" name="tagIds" class="mdb-select md-form mx-2 my-2" multiple>
-                                    <option value="1">cancon</option>
-                                    <option value="2">new</option>
-                                    <option value="3">hit</option>
-                                    <option value="4">instrmntl</option>
-                                    <option value="5">TO</option>
-                                    <option value="6">FemCon</option>
-                                    <option value="7">Theme</option>
+                                <select id="TrackTags" name="tagIds" style="display:block;" class="mdb-select md-form mx-2 my-2" multiple>
+<!--                                    <option value="1">cancon</option>-->
+<!--                                    <option value="2">new</option>-->
+<!--                                    <option value="3">hit</option>-->
+<!--                                    <option value="4">instrmntl</option>-->
+<!--                                    <option value="5">TO</option>-->
+<!--                                    <option value="6">FemCon</option>-->
+<!--                                    <option value="7">Theme</option>-->
                                 </select>
                             </div>
                         </div>
@@ -81,7 +81,7 @@
                             </div>
                             <script th:inline="javascript" type="text/javascript">
                                 /*<![CDATA[*/
-                                $(document).ready(function () {
+                                $(document).ready(function () { //A page can't be manipulated safely until the document is "ready." (definition)
                                     let modifiedDateStartInput = $("#TrackStart");
                                     let modifiedDateEndInput = $("#TrackEnd");
 
@@ -95,9 +95,12 @@
                                         modifiedDateStartInput.data("DateTimePicker").maxDate(e.date);
                                     });
 
-                                });
+                                }
+                                );
 
                                 /*]]>*/
+
+
                             </script>
                         </div>
 
@@ -125,7 +128,7 @@
                 multiple: true,
                 allowClear: true,
                 ajax: {
-                    url: /*[[@{/tag/search}]]*/ "",
+                    url: /*[[@{/tag/search}]]*/ "/tag/search",
                     dataType: 'json',
                     delay: 500,
                     data: function (params) {
@@ -134,6 +137,7 @@
                         };
                     },
                     processResults: function (data, params) {
+                        console.log(data); //EMPTY COLLECTION []
                         return {
                             results: data
                         };
@@ -142,15 +146,28 @@
                 }
             });
 
+            //SOMWHOW ADDING THIS WORKED????? I don't really even know what this does...
+            // var $example = $("#TrackTags").select2({width:'100%'});
+            // $("#TrackTags").on("click", function() {
+            //     $example.val("1").trigger("change");
+            // });
+
             addTrack = function (showId) { //New Blank Track
                 let modal = $('#trackModal');
-                console.log(showId);
+                // console.log(showId);
 
                 $('#TrackShowId').val(showId);
 
 
                 //TODO: nika - Clear the inputs so that if they close and reopen its not weird info
+                // update: "", null?? is there a more elegant way to do this?
                 $('#TrackId').val(""); //blanks will do
+
+                $('#TrackTitle').val("");
+                $('#TrackArtist').val("");
+                $('#TrackAlbum').val("");
+                $('#TrackLabel').val("");
+                $('#TrackLang').val("");
 
                 //TODO: Fix this - error is coming from here
                 // $('#example-startTimestamp').val(data.startTimestamp);
@@ -159,6 +176,8 @@
 
 
                 $('#TrackTags').val(null).trigger("change"); //Reset tags
+
+
 
                 modal.modal('show');
                 $('#trackModalLabel').focus();
